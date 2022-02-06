@@ -71,7 +71,14 @@ class Dex(object):
         price = self.router_contract.functions.getAmountsOut(1 * decimals, [self.base_address, token_address]).call()[-1]
         return price / decimals
 
-
 class Pancakeswap(Dex):
     def __init__(self):
         super().__init__("./configs/pancakeswap.json")
+
+class Stellaswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/stellaswap.json")
+
+class Uniswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/uniswap.json")
