@@ -15,6 +15,8 @@ class Dex(object):
             self.factory_abi = json.load(json_file)
         with open(os.path.join(dir, config["ROUTER_ABI_FILE"])) as json_file:
             self.router_abi = json.load(json_file)
+        with open(os.path.join(dir, config["LIQUIDITY_ABI_FILE"])) as json_file:
+            self.liquidity_abi = json.load(json_file)
         self.client = Web3(Web3.HTTPProvider(config["PROVIDER"]))
         factory_address = Web3.toChecksumAddress(config["FACTORY_ADDR"])
         router_address = Web3.toChecksumAddress(config["ROUTER_ADDR"])
@@ -36,7 +38,7 @@ class Dex(object):
     def reserves(self, token):
         token_address = Web3.toChecksumAddress(token)
         pair_address = self.factory_contract.functions.getPair(self.base_address, token_address).call()
-        pair_contract = self.client.eth.contract(address=pair_address, abi=self.factory_abi)
+        pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
         return reserves
     
@@ -57,10 +59,9 @@ class Dex(object):
         ratio = reserves[1] / reserves[0]
         inverted_price = 1 / (price / (10 ** (18 - 6)))
 
-
     def balance(self, wallet_address, address):
         address = Web3.toChecksumAddress(address)
-        balance_contract = self.client.eth.contract(address=address, abi=self.factory_abi)
+        balance_contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance
 
