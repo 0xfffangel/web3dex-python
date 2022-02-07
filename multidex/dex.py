@@ -82,3 +82,7 @@ class Stellaswap(Dex):
 class Uniswap(Dex):
     def __init__(self):
         super().__init__("./configs/uniswap.json")
+
+class Spookyswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/spookyswap.json")
