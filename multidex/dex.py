@@ -86,3 +86,7 @@ class Uniswap(Dex):
 class Spookyswap(Dex):
     def __init__(self):
         super().__init__("./configs/spookyswap.json")
+
+class Beamswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/beamswap.json")
