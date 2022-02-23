@@ -160,7 +160,7 @@ class Dex(object):
     def signTransaction(self, transaction, private_key):
         return self.eth.account.signTransaction(transaction, private_key)
 
-    def signTransaction(self, signed_transaction):
+    def sendTransaction(self, signed_transaction):
         return self.eth.sendRawTransaction(signed_transaction.rawTransaction)
 
 class Pancakeswap(Dex):
