@@ -18,8 +18,8 @@ class Dex(object):
         with open(os.path.join(dir, config["LIQUIDITY_ABI_FILE"])) as json_file:
             self.liquidity_abi = json.load(json_file)
         self.client = Web3(Web3.HTTPProvider(config["PROVIDER"]))
-        factory_address = Web3.toChecksumAddress(config["FACTORY_ADDR"])
-        router_address = Web3.toChecksumAddress(config["ROUTER_ADDR"])
+        self.factory_address = Web3.toChecksumAddress(config["FACTORY_ADDR"])
+        self.router_address = Web3.toChecksumAddress(config["ROUTER_ADDR"])
         self.factory_contract = self.client.eth.contract(address=config["FACTORY_ADDR"], abi=self.factory_abi)
         self.router_contract = self.client.eth.contract(address=config["ROUTER_ADDR"], abi=self.router_abi)
         self.base_address = Web3.toChecksumAddress(config["BASE_CONTRACT"])
