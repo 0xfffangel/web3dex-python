@@ -1,6 +1,7 @@
 import json
 import os
 import logging
+import time
 
 from web3 import Web3
 from web3.exceptions import ABIFunctionNotFound, TransactionNotFound, BadFunctionCallOutput
@@ -66,9 +67,14 @@ class Dex(object):
         return balance
 
     def price(self, token):
-        token_address = Web3.toChecksumAddress(token)
-        decimals = self.decimals(token)
-        price = self.router_contract.functions.getAmountsOut(1 * decimals, [self.base_address, token_address]).call()[-1]
+        return self.price(token, self.base_address)
+
+    def price(self, inToken, outToken):
+        inToken = Web3.toChecksumAddress(inToken)
+        outToken = Web3.toChecksumAddress(outToken)
+        decimals = self.decimals(inToken)
+        self.sync(inToken, outToken)
+        price = self.router_contract.functions.getAmountsOut(1 * decimals, [inToken, outToken]).call()[-1]
         return price / decimals
 
 class Pancakeswap(Dex):
