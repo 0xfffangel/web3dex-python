@@ -77,6 +77,92 @@ class Dex(object):
         price = self.router_contract.functions.getAmountsOut(1 * decimals, [inToken, outToken]).call()[-1]
         return price / decimals
 
+    def sync(self, inToken, outToken):
+        pair = self.factory_contract.functions.getPair(inToken, outToken).call()
+        contract = self.eth.contract(address=Web3.toChecksumAddress(pair), abi=self.liquidity_abi)
+        return contract.functions.sync().call()
+
+    def allowance(self, wallet_address, address):
+        address = Web3.toChecksumAddress(address)
+        contract = self.eth.contract(address=address, abi=self.liquidity_abi)
+        return contract.functions.allowance(address, self.router_address).call()
+
+    def check_approval(self, wallet_address, address):
+        return self.allowance(wallet_address, address) > 0
+
+    def estimate_gas(self):
+           return (((self.eth.gasPrice) / 1000000000)) + ((self.eth.gasPrice) / 1000000000) * (int(20) / 100)
+
+    def swapExactETHForTokens(self, amount, token, address, gas, slippage):
+        address = Web3.toChecksumAddress(address)
+        timeout = (int(time.time()) + 60)
+        amount_out = self.price(self.base_address, token)
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
+        return self.router_contract.functions.swapExactETHForTokens(
+            min_tokens, [self.base_address, token], address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gas)
+                )
+
+    def swapExactTokensForETH(self, amount, token, address, gas, slippage):
+        address = Web3.toChecksumAddress(address)
+        timeout = (int(time.time()) + 60)
+        amount_out = self.price(token, self.base_address)
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
+        return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
+            amount, min_tokens, [token, self.base_address], address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gas)
+                )
+
+    def swapExactTokensForTokens(self, amount, token, address, gas, slippage):
+        address = Web3.toChecksumAddress(address)
+        timeout = (int(time.time()) + 60)
+        amount_out = self.price(token, self.base_address)
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
+        return self.router_contract.functions.swapExactTokensForTokens(
+            min_tokens, [token, self.base_address], address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gas)
+                )
+
+    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, gas, slippage):
+        address = Web3.toChecksumAddress(address)
+        timeout = (int(time.time()) + 60)
+        amount_out = self.price(token, self.base_address)
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
+        return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
+            amount, min_tokens, [token, self.base_address], address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gas)
+                )
+
+    def paramsTransaction(self, address, gas, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
+        nonce = self.eth.get_transaction_count(address)
+        gaslimit = gaslimit if gaslimit > 0 else gas
+        if type is 0:
+            return {
+                'gasPrice': Web3.toWei(gas, 'gwei'),
+                'gas': gaslimit,
+                'from': address,
+                'nonce': nonce
+            }
+        return {
+            'maxFeePerGas': Web3.toWei(gas, 'gwei'),
+            'maxPriorityFeePerGas': Web3.toWei(gaspriority, 'gwei'),
+            'gas': gaslimit,
+            'value': amount,
+            'from': address,
+            'nonce': nonce,
+            'type': "0x02"
+        }
+
+    def signTransaction(self, transaction, private_key):
+        return self.eth.account.signTransaction(transaction, private_key)
+
+    def signTransaction(self, signed_transaction):
+        return self.eth.sendRawTransaction(signed_transaction.rawTransaction)
+
 class Pancakeswap(Dex):
     def __init__(self):
         super().__init__("./configs/pancakeswap.json")
