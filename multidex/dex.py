@@ -171,6 +171,9 @@ class Dex(object):
     def sendTransaction(self, signed_transaction):
         return self.client.eth.sendRawTransaction(signed_transaction.rawTransaction)
 
+    def hash(self, transaction):
+        return Web3.toHex(self.client.keccak(transaction.rawTransaction))
+
 class Pancakeswap(Dex):
     def __init__(self):
         super().__init__("./configs/pancakeswap.json")
