@@ -98,10 +98,11 @@ class Dex(object):
            return (((self.client.eth.gasPrice) / 1000000000)) + ((self.client.eth.gasPrice) / 1000000000) * (int(20) / 100)
 
     def swapExactETHForTokens(self, amount, token, address, gas, slippage):
-        address = Web3.toChecksumAddress(address)
         timeout = (int(time.time()) + 60)
         amount_out = self.price(self.base_address, token, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
+        address = Web3.toChecksumAddress(address)
+        token = Web3.toChecksumAddress(token)
         return self.router_contract.functions.swapExactETHForTokens(
             min_tokens, [self.base_address, token], address, timeout
             ).buildTransaction(
@@ -109,10 +110,11 @@ class Dex(object):
                 )
 
     def swapExactTokensForETH(self, amount, token, address, gas, slippage):
-        address = Web3.toChecksumAddress(address)
         timeout = (int(time.time()) + 60)
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
+        address = Web3.toChecksumAddress(address)
+        token = Web3.toChecksumAddress(token)
         return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
@@ -120,10 +122,11 @@ class Dex(object):
                 )
 
     def swapExactTokensForTokens(self, amount, token, address, gas, slippage):
-        address = Web3.toChecksumAddress(address)
         timeout = (int(time.time()) + 60)
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
+        address = Web3.toChecksumAddress(address)
+        token = Web3.toChecksumAddress(token)
         return self.router_contract.functions.swapExactTokensForTokens(
             min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
@@ -131,10 +134,11 @@ class Dex(object):
                 )
 
     def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, gas, slippage):
-        address = Web3.toChecksumAddress(address)
         timeout = (int(time.time()) + 60)
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
+        address = Web3.toChecksumAddress(address)
+        token = Web3.toChecksumAddress(token)
         return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
