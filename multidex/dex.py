@@ -25,6 +25,9 @@ class Dex(object):
         self.router_contract = self.client.eth.contract(address=config["ROUTER_ADDR"], abi=self.router_abi)
         self.base_address = Web3.toChecksumAddress(config["BASE_CONTRACT"])
 
+    def base_address(self):
+        return self.base_address
+
     def decimals(self, token):
         try:
             address=Web3.toChecksumAddress(token)
