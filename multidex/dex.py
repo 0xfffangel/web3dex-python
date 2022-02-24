@@ -65,7 +65,6 @@ class Dex(object):
 
     def balance(self, wallet_address, address):
         address = Web3.toChecksumAddress(address)
-        wallet_address = Web3.toChecksumAddress(wallet_address)
         balance_contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance
