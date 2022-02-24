@@ -63,11 +63,12 @@ class Dex(object):
         ratio = reserves[1] / reserves[0]
         inverted_price = 1 / (price / (10 ** (18 - 6)))
 
-    def balance(self, wallet_address, address):
-        address = Web3.toChecksumAddress(address)
-        balance_contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
-        balance = balance_contract.functions.balanceOf(wallet_address).call()
-        return balance
+    def balance(self, wallet_address, token = None):
+        if token == None:
+            return self.client.eth.getBalance(wallet_address)
+        token = Web3.toChecksumAddress(token)
+        balance_contract = self.client.eth.contract(address=token, abi=self.liquidity_abi)
+        return balance_contract.functions.balanceOf(wallet_address).call()
 
     def price(self, inToken, outToken = None, amount = 1):
         inToken = Web3.toChecksumAddress(inToken)
