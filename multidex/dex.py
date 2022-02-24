@@ -65,10 +65,11 @@ class Dex(object):
 
     def balance(self, wallet_address, token = None):
         if token == None:
-            return self.client.eth.getBalance(wallet_address)
+            return self.client.eth.getBalance(wallet_address) / self.decimals(self.base_address)
         token = Web3.toChecksumAddress(token)
         balance_contract = self.client.eth.contract(address=token, abi=self.liquidity_abi)
-        return balance_contract.functions.balanceOf(wallet_address).call()
+        balance = balance_contract.functions.balanceOf(wallet_address).call()
+        return balance / self.decimals(token)
 
     def price(self, inToken, outToken = None, amount = 1):
         inToken = Web3.toChecksumAddress(inToken)
