@@ -148,17 +148,17 @@ class Dex(object):
     def paramsTransaction(self, address, gas, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
         nonce = self.client.eth.get_transaction_count(address)
         gaslimit = gaslimit if gaslimit > 0 else gas
-        if type is 0:
+        if type == 0:
             return {
                 'gasPrice': Web3.toWei(gas, 'gwei'),
-                'gas': gaslimit,
+                'gas': int(gaslimit),
                 'from': address,
                 'nonce': nonce
             }
         return {
             'maxFeePerGas': Web3.toWei(gas, 'gwei'),
             'maxPriorityFeePerGas': Web3.toWei(gaspriority, 'gwei'),
-            'gas': gaslimit,
+            'gas': int(gaslimit),
             'value': amount,
             'from': address,
             'nonce': nonce,
