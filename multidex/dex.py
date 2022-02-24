@@ -81,19 +81,19 @@ class Dex(object):
 
     def sync(self, inToken, outToken):
         pair = self.factory_contract.functions.getPair(inToken, outToken).call()
-        contract = self.eth.contract(address=Web3.toChecksumAddress(pair), abi=self.liquidity_abi)
+        contract = self.client.eth.contract(address=Web3.toChecksumAddress(pair), abi=self.liquidity_abi)
         return contract.functions.sync().call()
 
     def allowance(self, wallet_address, address):
         address = Web3.toChecksumAddress(address)
-        contract = self.eth.contract(address=address, abi=self.liquidity_abi)
+        contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
         return contract.functions.allowance(address, self.router_address).call()
 
     def check_approval(self, wallet_address, address):
         return self.allowance(wallet_address, address) > 0
 
     def estimate_gas(self):
-           return (((self.eth.gasPrice) / 1000000000)) + ((self.eth.gasPrice) / 1000000000) * (int(20) / 100)
+           return (((self.client.eth.gasPrice) / 1000000000)) + ((self.client.eth.gasPrice) / 1000000000) * (int(20) / 100)
 
     def swapExactETHForTokens(self, amount, token, address, gas, slippage):
         address = Web3.toChecksumAddress(address)
@@ -140,7 +140,7 @@ class Dex(object):
                 )
 
     def paramsTransaction(self, address, gas, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
-        nonce = self.eth.get_transaction_count(address)
+        nonce = self.client.eth.get_transaction_count(address)
         gaslimit = gaslimit if gaslimit > 0 else gas
         if type is 0:
             return {
@@ -160,10 +160,10 @@ class Dex(object):
         }
 
     def signTransaction(self, transaction, private_key):
-        return self.eth.account.signTransaction(transaction, private_key)
+        return self.client.eth.account.signTransaction(transaction, private_key)
 
     def sendTransaction(self, signed_transaction):
-        return self.eth.sendRawTransaction(signed_transaction.rawTransaction)
+        return self.client.eth.sendRawTransaction(signed_transaction.rawTransaction)
 
 class Pancakeswap(Dex):
     def __init__(self):
