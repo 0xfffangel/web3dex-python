@@ -69,11 +69,10 @@ class Dex(object):
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance
 
-    def price(self, token):
-        return self.price(token, self.base_address)
-
-    def price(self, inToken, outToken, amount = 1):
+    def price(self, inToken, outToken = None, amount = 1):
         inToken = Web3.toChecksumAddress(inToken)
+        if outToken is None:
+            outToken = self.base_address
         outToken = Web3.toChecksumAddress(outToken)
         decimals = self.decimals(inToken)
         self.sync(inToken, outToken)
