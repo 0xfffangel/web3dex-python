@@ -164,6 +164,7 @@ class Dex(object):
             return {
                 'gasPrice': Web3.toWei(gas, 'gwei'),
                 'gas': int(gaslimit),
+                'value': amount,
                 'from': address,
                 'nonce': nonce
             }
