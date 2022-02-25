@@ -122,10 +122,12 @@ class Dex(object):
         return self.router_contract.functions.swapExactTokensForETH(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gas)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit)
                 )
 
-    def swapExactTokensForTokens(self, amount, token, address, gas, slippage):
+    def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
+        if gas == 0:
+            gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
@@ -134,10 +136,12 @@ class Dex(object):
         return self.router_contract.functions.swapExactTokensForTokens(
             min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gas)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit)
                 )
 
-    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, gas, slippage):
+    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
+        if gas == 0:
+            gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
@@ -146,7 +150,7 @@ class Dex(object):
         return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gas)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit)
                 )
 
     def paramsTransaction(self, address, gas, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
