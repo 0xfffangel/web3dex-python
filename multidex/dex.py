@@ -176,6 +176,17 @@ class Dex(object):
     def hash(self, transaction):
         return Web3.toHex(self.client.keccak(transaction.rawTransaction))
 
+    def waitTransaction(self, tx_hash):
+        timeout = time() + 60
+        while True:
+            time.sleep(1)
+            try:
+                receipt = self.client.eth.getTransactionReceipt(tx_hash)
+                return receipt['status']
+            except:
+                if time() > timeout:
+                    raise Exception("Unconfirmed tx after 1 min")
+
 class Pancakeswap(Dex):
     def __init__(self):
         super().__init__("./configs/pancakeswap.json")
