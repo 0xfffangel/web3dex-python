@@ -101,6 +101,7 @@ class Dex(object):
         if gas == 0:
             gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
+        amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(self.base_address, token, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
@@ -115,6 +116,7 @@ class Dex(object):
         if gas == 0:
             gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
+        amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
@@ -129,6 +131,7 @@ class Dex(object):
         if gas == 0:
             gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
+        amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
@@ -143,6 +146,7 @@ class Dex(object):
         if gas == 0:
             gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
+        amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(token, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
