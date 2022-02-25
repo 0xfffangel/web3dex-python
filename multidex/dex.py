@@ -183,14 +183,14 @@ class Dex(object):
         return Web3.toHex(self.client.keccak(transaction.rawTransaction))
 
     def waitTransaction(self, tx_hash):
-        timeout = time() + 60
+        timeout = time.time() + 60
         while True:
             time.sleep(1)
             try:
                 receipt = self.client.eth.getTransactionReceipt(tx_hash)
                 return receipt['status']
             except:
-                if time() > timeout:
+                if time.time() > timeout:
                     raise Exception("Unconfirmed tx after 1 min")
 
 class Pancakeswap(Dex):
