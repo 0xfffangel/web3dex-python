@@ -97,7 +97,9 @@ class Dex(object):
     def estimate_gas(self):
            return (((self.client.eth.gasPrice) / 1000000000)) + ((self.client.eth.gasPrice) / 1000000000) * (int(20) / 100)
 
-    def swapExactETHForTokens(self, amount, token, address, gas, slippage):
+    def swapExactETHForTokens(self, amount, token, address, gas = 0, slippage = 5, gaslimit = 250000):
+        if gas == 0:
+            gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
         amount_out = self.price(self.base_address, token, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
@@ -106,7 +108,7 @@ class Dex(object):
         return self.router_contract.functions.swapExactETHForTokens(
             min_tokens, [self.base_address, token], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gas)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit)
                 )
 
     def swapExactTokensForETH(self, amount, token, address, gas, slippage):
