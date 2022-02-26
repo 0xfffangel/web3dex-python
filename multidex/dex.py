@@ -97,39 +97,41 @@ class Dex(object):
     def estimate_gas(self):
            return (((self.client.eth.gasPrice) / 1000000000)) + ((self.client.eth.gasPrice) / 1000000000) * (int(20) / 100)
 
-    def swapExactETHForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
-        if gas == 0:
-            gas = self.estimate_gas()
+    def swapExactETHForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
         timeout = (int(time.time()) + 60)
-        amount = int(float(amount) * self.decimals(token))
-        amount_out = self.price(self.base_address, token, amount)
-        min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
+        amount = int(float(amount) * self.decimals(self.base_address))
+        self.sync(self.base_address,token)
+        amount_out = self.router_contract.functions.getAmountsOut(amount, [self.base_address, token]).call()[-1]
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
+        print("amount",amount)
+        print("amount_out",amount_out)
+        print("min_tokens",min_tokens)
         return self.router_contract.functions.swapExactETHForTokens(
             min_tokens, [self.base_address, token], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
-    def swapExactTokensForETH(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
-        if gas == 0:
-            gas = self.estimate_gas()
+    def swapExactTokensForETH(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 2000000):
         timeout = (int(time.time()) + 60)
-        amount = int(float(amount) * self.decimals(token))
-        amount_out = self.price(token, self.base_address, amount)
-        min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
+        amount = int(float(amount) * self.decimals(token))
+        self.sync(token, self.base_address)
+        amount_out = self.router_contract.functions.getAmountsOut(amount, [token, self.base_address]).call()[-1]
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
+        print("amount",amount)
+        print("amount_out",amount_out)
+        print("min_tokens",min_tokens)
         return self.router_contract.functions.swapExactTokensForETH(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
     def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
-        if gas == 0:
-            gas = self.estimate_gas()
         timeout = (int(time.time()) + 60)
         amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(token, self.base_address, amount)
@@ -139,26 +141,25 @@ class Dex(object):
         return self.router_contract.functions.swapExactTokensForTokens(
             min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
-    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
-        if gas == 0:
-            gas = self.estimate_gas()
+    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 400000):
         timeout = (int(time.time()) + 60)
-        amount = int(float(amount) * self.decimals(token))
-        amount_out = self.price(token, self.base_address, amount)
-        min_tokens = int(amount_out * (1 - (slippage / 100)))
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
+        amount = int(float(amount) * self.decimals(token))
+        amount_out = self.router_contract.functions.getAmountsOut(amount, [token, self.base_address]).call()[-1]
+        min_tokens = int(amount_out * (1 - (slippage / 100)))
         return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
-    def paramsTransaction(self, address, gas, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
+    def paramsTransaction(self, address, gas = 0, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
         nonce = self.client.eth.get_transaction_count(address)
+        gas = gas if gas > 0 else self.estimate_gas()
         gaslimit = gaslimit if gaslimit > 0 else gas
         if type == 0:
             return {
