@@ -157,6 +157,15 @@ class Dex(object):
                 self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
+    def approve(self, address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000):
+        address = Web3.toChecksumAddress(address)
+        contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
+        return contract.functions.approve(
+            self.router_address, amount
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=0)
+                )
+
     def paramsTransaction(self, address, gas = 0, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
         nonce = self.client.eth.get_transaction_count(address)
         gas = gas if gas > 0 else self.estimate_gas()
