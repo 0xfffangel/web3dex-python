@@ -89,7 +89,7 @@ class Dex(object):
     def allowance(self, wallet_address, address):
         address = Web3.toChecksumAddress(address)
         contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
-        return contract.functions.allowance(address, self.router_address).call()
+        return contract.functions.allowance(wallet_address, self.router_address).call()
 
     def check_approval(self, wallet_address, address):
         return self.allowance(wallet_address, address) > 0
