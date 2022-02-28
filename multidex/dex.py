@@ -128,7 +128,7 @@ class Dex(object):
         return self.router_contract.functions.swapExactTokensForETH(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None)
                 )
 
     def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
@@ -166,27 +166,30 @@ class Dex(object):
                 self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=0)
                 )
 
-    def paramsTransaction(self, address, gas = 0, type = 0, amount = 0, gaspriority = 1, gaslimit=0):
+    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0):
         nonce = self.client.eth.get_transaction_count(address)
         gas = gas if gas > 0 else self.estimate_gas()
         gaslimit = gaslimit if gaslimit > 0 else gas
+        tx = {}
         if type == 0:
-            return {
+            tx = {
                 'gasPrice': Web3.toWei(gas, 'gwei'),
                 'gas': int(gaslimit),
-                'value': amount,
                 'from': address,
                 'nonce': nonce
             }
-        return {
+        else: 
+            tx = {
             'maxFeePerGas': Web3.toWei(gas, 'gwei'),
             'maxPriorityFeePerGas': Web3.toWei(gaspriority, 'gwei'),
             'gas': int(gaslimit),
-            'value': amount,
             'from': address,
             'nonce': nonce,
             'type': "0x02"
         }
+        if amount != None:
+            tx["value"] = amount
+        return tx
 
     def signTransaction(self, transaction, private_key):
         return self.client.eth.account.signTransaction(transaction, private_key)
