@@ -44,15 +44,16 @@ class Dex(object):
         pair_address = self.factory_contract.functions.getPair(self.base_address, token_address).call()
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
+        reserves[0] = reserves[0] / self.decimals(self.base_address)
+        reserves[1] = reserves[1] / self.decimals(token)
         return reserves
     
     def liquidity(self, token):
         reserves = self.reserves(token)
-        decimals = self.decimals(token)
         if int(self.base_address, 16) > int(token, 16):
-            return reserves[0] / decimals
+            return reserves[0]
         else:
-            return reserves[1] / decimals
+            return reserves[1]
 
     def reserve_ratio(self, token):
         reserves = self.reserves(token)
