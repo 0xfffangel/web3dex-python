@@ -24,17 +24,23 @@ class Dex(object):
         self.factory_contract = self.client.eth.contract(address=config["FACTORY_ADDR"], abi=self.factory_abi)
         self.router_contract = self.client.eth.contract(address=config["ROUTER_ADDR"], abi=self.router_abi)
         self.base_address = Web3.toChecksumAddress(config["BASE_CONTRACT"])
+        self.decimals_ = {}
 
     def base_address(self):
         return self.base_address
 
-    def decimals(self, token):
+    def decimals(self, token, fallback = None):
+        if fallback is not None:
+            self.decimals_[token] = fallback
         try:
             address=Web3.toChecksumAddress(token)
             balance_contract = self.client.eth.contract(address=address, abi=self.factory_abi)
             decimals = balance_contract.functions.decimals().call()
+            print("decimals", decimals)
             return 10 ** decimals
         except ABIFunctionNotFound:
+            if token in self.decimals_:
+                return 10 ** self.decimals_[token]
             return 10 ** 18
         except ValueError as err:
             logging.exception(err)
