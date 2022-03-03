@@ -44,25 +44,28 @@ class Dex(object):
         pair_address = self.factory_contract.functions.getPair(self.base_address, token_address).call()
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
-        reserves[0] = reserves[0] / self.decimals(self.base_address)
-        reserves[1] = reserves[1] / self.decimals(token)
+        if int(self.base_address, 16) < int(token, 16):
+            reserves[0] = reserves[0] / self.decimals(self.base_address)
+            reserves[1] = reserves[1] / self.decimals(token)
+        else:
+            reserves[0] = reserves[0] / self.decimals(token)
+            reserves[1] = reserves[1] / self.decimals(self.base_address)
         return reserves
     
     def liquidity(self, token):
         reserves = self.reserves(token)
-        if int(self.base_address, 16) > int(token, 16):
-            return reserves[0]
+        decimals = self.decimals(token)
+        if int(self.base_address, 16) < int(token, 16):
+            return reserves[0] / decimals
         else:
-            return reserves[1]
+            return reserves[1] / decimals
 
     def reserve_ratio(self, token):
         reserves = self.reserves(token)
-        if int(self.base_address, 16) > int(token, 16):
-            return reserves[0] / reserves[1]
-        else:
+        if int(self.base_address, 16) < int(token, 16):
             return reserves[1] / reserves[0]
-        ratio = reserves[1] / reserves[0]
-        inverted_price = 1 / (price / (10 ** (18 - 6)))
+        else:
+            return reserves[0] / reserves[1]
 
     def balance(self, wallet_address, token = None):
         if token == None:
