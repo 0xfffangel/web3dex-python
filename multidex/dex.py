@@ -30,13 +30,12 @@ class Dex(object):
         return self.base_address
 
     def decimals(self, token, fallback = None):
+        token = Web3.toChecksumAddress(token)
         if fallback is not None:
             self.decimals_[token] = fallback
         try:
-            address=Web3.toChecksumAddress(token)
-            balance_contract = self.client.eth.contract(address=address, abi=self.factory_abi)
+            balance_contract = self.client.eth.contract(address=token, abi=self.factory_abi)
             decimals = balance_contract.functions.decimals().call()
-            print("decimals", decimals)
             return 10 ** decimals
         except ABIFunctionNotFound:
             if token in self.decimals_:
