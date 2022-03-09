@@ -6,3 +6,4 @@ from .dex import Uniswap
 from .dex import Spookyswap
 from .dex import Beamswap
 from .dex import Quickswap
+from .dex import Spiritswap
