@@ -5,3 +5,4 @@ from .dex import Stellaswap
 from .dex import Uniswap
 from .dex import Spookyswap
 from .dex import Beamswap
+from .dex import Quickswap
