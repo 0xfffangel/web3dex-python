@@ -277,3 +277,7 @@ class Waultswap(Dex):
 class Traderjoe(Dex):
     def __init__(self):
         super().__init__("./configs/traderjoe.json")
+
+class Pangolin(Dex):
+    def __init__(self):
+        super().__init__("./configs/pangolin.json")

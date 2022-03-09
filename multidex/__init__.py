@@ -9,3 +9,4 @@ from .dex import Quickswap
 from .dex import Spiritswap
 from .dex import Waultswap
 from .dex import Traderjoe
+from .dex import Pangolin
