@@ -8,3 +8,4 @@ from .dex import Beamswap
 from .dex import Quickswap
 from .dex import Spiritswap
 from .dex import Waultswap
+from .dex import Traderjoe

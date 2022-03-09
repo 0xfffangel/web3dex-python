@@ -117,6 +117,12 @@ class Dex(object):
         print("amount",amount)
         print("amount_out",amount_out)
         print("min_tokens",min_tokens)
+        if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
+            return self.router_contract.functions.swapExactAVAXForTokens(
+                min_tokens, [self.base_address, token], address, timeout
+                ).buildTransaction(
+                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                    )
         return self.router_contract.functions.swapExactETHForTokens(
             min_tokens, [self.base_address, token], address, timeout
             ).buildTransaction(
@@ -134,6 +140,12 @@ class Dex(object):
         print("amount",amount)
         print("amount_out",amount_out)
         print("min_tokens",min_tokens)
+        if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
+            return self.router_contract.functions.swapExactTokensForAVAX(
+            amount, min_tokens, [token, self.base_address], address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None)
+                )
         return self.router_contract.functions.swapExactTokensForETH(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
@@ -160,6 +172,12 @@ class Dex(object):
         amount = int(float(amount) * self.decimals(token))
         amount_out = self.router_contract.functions.getAmountsOut(amount, [token, self.base_address]).call()[-1]
         min_tokens = int(amount_out * (1 - (slippage / 100)))
+        if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
+            return self.router_contract.functions.swapExactTokensForAVAXSupportingFeeOnTransferTokens(
+                amount, min_tokens, [token, self.base_address], address, timeout
+                ).buildTransaction(
+                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                    )
         return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
@@ -255,3 +273,7 @@ class Spiritswap(Dex):
 class Waultswap(Dex):
     def __init__(self):
         super().__init__("./configs/waultswap.json")
+
+class Traderjoe(Dex):
+    def __init__(self):
+        super().__init__("./configs/traderjoe.json")
