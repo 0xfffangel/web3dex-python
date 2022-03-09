@@ -239,9 +239,19 @@ class Spookyswap(Dex):
 class Beamswap(Dex):
     def __init__(self):
         super().__init__("./configs/beamswap.json")
+
 class Quickswap(Dex):
     def __init__(self):
         super().__init__("./configs/quickswap.json")
+
 class Spiritswap(Dex):
     def __init__(self):
         super().__init__("./configs/spiritswap.json")
+
+class Spiritswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/spiritswap.json")
+
+class Waultswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/waultswap.json")
