@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap
 import unittest
 import logging
 import sys
@@ -49,6 +49,12 @@ class TestDex(unittest.TestCase):
         GLINT = "0xcd3b51d98478d53f4515a306be565c6eebef1d58"
         beamswap = Beamswap()
         self.check(beamswap, GLINT)
+
+    def testQuickswap(self):
+        log = logging.getLogger("testQuickswap")
+        USDC = "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+        quickswap = Quickswap()
+        self.check(quickswap, USDC)
 
 if __name__ == '__main__':
     logging.basicConfig( stream=sys.stderr )
