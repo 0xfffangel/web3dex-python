@@ -80,12 +80,12 @@ class Dex(object):
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance / self.decimals(token)
 
-    def price(self, inToken, outToken = None, amount = 1):
+    def price(self, outToken, inToken = None, amount = 1):
+        if inToken is None:
+            inToken = self.base_address
         inToken = Web3.toChecksumAddress(inToken)
-        if outToken is None:
-            outToken = self.base_address
         outToken = Web3.toChecksumAddress(outToken)
-        decimals = self.decimals(inToken)
+        decimals = self.decimals(outToken)
         self.sync(inToken, outToken)
         amount = amount * decimals
         price = self.getAmountsOut(amount, inToken, outToken)
