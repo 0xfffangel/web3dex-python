@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe
 import unittest
 import logging
 import sys
@@ -55,6 +55,12 @@ class TestDex(unittest.TestCase):
         USDC = "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
         quickswap = Quickswap()
         self.check(quickswap, USDC)
+
+    def testTraderjoe(self):
+        log = logging.getLogger("testTraderjoe")
+        USDT = "0xc7198437980c041c805a1edcba50c1ce5db95118"
+        traderjoe = Traderjoe()
+        self.check(traderjoe, USDT)
 
 if __name__ == '__main__':
     logging.basicConfig( stream=sys.stderr )
