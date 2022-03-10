@@ -10,3 +10,4 @@ from .dex import Spiritswap
 from .dex import Waultswap
 from .dex import Traderjoe
 from .dex import Pangolin
+from .dex import Solidly
