@@ -46,7 +46,7 @@ class Dex(object):
 
     def reserves(self, token):
         token_address = Web3.toChecksumAddress(token)
-        pair_address = self.factory_contract.functions.getPair(self.base_address, token_address).call()
+        pair_address = self.getPair(self.base_address, token_address)
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
         if int(self.base_address, 16) < int(token, 16):
@@ -87,11 +87,18 @@ class Dex(object):
         outToken = Web3.toChecksumAddress(outToken)
         decimals = self.decimals(inToken)
         self.sync(inToken, outToken)
-        price = self.router_contract.functions.getAmountsOut(amount * decimals, [inToken, outToken]).call()[-1]
+        amount = amount * decimals
+        price = self.getAmountsOut(amount, inToken, outToken)
         return price / decimals
 
+    def getAmountsOut(self, amount, inToken, outToken):
+        return self.router_contract.functions.getAmountsOut(amount, [inToken, outToken]).call()[-1]
+
+    def getPair(self, inToken, outToken):
+        return self.factory_contract.functions.getPair(inToken, outToken).call()
+
     def sync(self, inToken, outToken):
-        pair = self.factory_contract.functions.getPair(inToken, outToken).call()
+        pair = self.getPair(inToken, outToken)
         contract = self.client.eth.contract(address=Web3.toChecksumAddress(pair), abi=self.liquidity_abi)
         return contract.functions.sync().call()
 
@@ -112,7 +119,7 @@ class Dex(object):
         token = Web3.toChecksumAddress(token)
         amount = int(float(amount) * self.decimals(self.base_address))
         self.sync(self.base_address,token)
-        amount_out = self.router_contract.functions.getAmountsOut(amount, [self.base_address, token]).call()[-1]
+        amount_out = self.getAmountsOut(amount, self.base_address, token).call()[-1]
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         print("amount",amount)
         print("amount_out",amount_out)
@@ -135,7 +142,7 @@ class Dex(object):
         token = Web3.toChecksumAddress(token)
         amount = int(float(amount) * self.decimals(token))
         self.sync(token, self.base_address)
-        amount_out = self.router_contract.functions.getAmountsOut(amount, [token, self.base_address]).call()[-1]
+        amount_out = self.getAmountsOut(amount, token, self.base_address).call()[-1]
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         print("amount",amount)
         print("amount_out",amount_out)
@@ -170,7 +177,7 @@ class Dex(object):
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
         amount = int(float(amount) * self.decimals(token))
-        amount_out = self.router_contract.functions.getAmountsOut(amount, [token, self.base_address]).call()[-1]
+        amount_out = self.getAmountsOut(amount, token, self.base_address).call()[-1]
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
             return self.router_contract.functions.swapExactTokensForAVAXSupportingFeeOnTransferTokens(
@@ -285,3 +292,11 @@ class Pangolin(Dex):
 class Solidly(Dex):
     def __init__(self):
         super().__init__("./configs/solidly.json")
+
+    def getAmountsOut(self, amount, inToken, outToken):
+        routes = [{ "from": inToken, "to": outToken, "stable": True },
+                { "from": inToken, "to": outToken, "stable": False }]
+        return self.router_contract.functions.getAmountsOut(amount, routes).call()[-1]
+
+    def getPair(self, inToken, outToken):
+        return self.factory_contract.functions.getPair(inToken, outToken, True).call()
