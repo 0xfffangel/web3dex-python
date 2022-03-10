@@ -21,8 +21,8 @@ class Dex(object):
         self.client = Web3(Web3.HTTPProvider(config["PROVIDER"]))
         self.factory_address = Web3.toChecksumAddress(config["FACTORY_ADDR"])
         self.router_address = Web3.toChecksumAddress(config["ROUTER_ADDR"])
-        self.factory_contract = self.client.eth.contract(address=config["FACTORY_ADDR"], abi=self.factory_abi)
-        self.router_contract = self.client.eth.contract(address=config["ROUTER_ADDR"], abi=self.router_abi)
+        self.factory_contract = self.client.eth.contract(address=self.factory_address, abi=self.factory_abi)
+        self.router_contract = self.client.eth.contract(address=self.router_address, abi=self.router_abi)
         self.base_address = Web3.toChecksumAddress(config["BASE_CONTRACT"])
         self.decimals_ = {}
 
