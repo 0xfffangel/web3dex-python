@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly
 import unittest
 import logging
 import sys
@@ -43,6 +43,18 @@ class TestDex(unittest.TestCase):
         FUSDT = "0x940f41f0ec9ba1a34cf001cc03347ac092f5f6b5"
         spookyswap = Spookyswap()
         self.check(spookyswap, FUSDT)
+
+    def testSpiritswap(self):
+        log = logging.getLogger("testSpiritswap")
+        USDT = "0x04068da6c83afcfa0e13ba15a6696662335d5b75"
+        spiritswap = Spiritswap()
+        self.check(spiritswap, USDT)
+
+    def testSolidly(self):
+        log = logging.getLogger("testSolidly")
+        SOLID = "0x888EF71766ca594DED1F0FA3AE64eD2941740A20"
+        solidly = Solidly()
+        self.check(solidly, SOLID)
 
     def testBeamswap(self):
         log = logging.getLogger("testBeamswap")
