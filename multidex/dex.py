@@ -136,7 +136,7 @@ class Dex(object):
                 self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
-    def swapExactTokensForETH(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 2000000):
+    def swapExactTokensForETH(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
         timeout = (int(time.time()) + 60)
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
@@ -159,7 +159,7 @@ class Dex(object):
                 self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None)
                 )
 
-    def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 250000):
+    def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
         timeout = (int(time.time()) + 60)
         amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(token, self.base_address, amount)
@@ -172,7 +172,7 @@ class Dex(object):
                 self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
                 )
 
-    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 400000):
+    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
         timeout = (int(time.time()) + 60)
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
