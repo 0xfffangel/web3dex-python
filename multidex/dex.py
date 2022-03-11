@@ -119,7 +119,7 @@ class Dex(object):
         token = Web3.toChecksumAddress(token)
         amount = int(float(amount) * self.decimals(self.base_address))
         self.sync(self.base_address,token)
-        amount_out = self.getAmountsOut(amount, self.base_address, token).call()[-1]
+        amount_out = self.getAmountsOut(amount, self.base_address, token)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         print("amount",amount)
         print("amount_out",amount_out)
@@ -142,7 +142,7 @@ class Dex(object):
         token = Web3.toChecksumAddress(token)
         amount = int(float(amount) * self.decimals(token))
         self.sync(token, self.base_address)
-        amount_out = self.getAmountsOut(amount, token, self.base_address).call()[-1]
+        amount_out = self.getAmountsOut(amount, token, self.base_address)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         print("amount",amount)
         print("amount_out",amount_out)
@@ -177,7 +177,7 @@ class Dex(object):
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
         amount = int(float(amount) * self.decimals(token))
-        amount_out = self.getAmountsOut(amount, token, self.base_address).call()[-1]
+        amount_out = self.getAmountsOut(amount, token, self.base_address)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
             return self.router_contract.functions.swapExactTokensForAVAXSupportingFeeOnTransferTokens(
