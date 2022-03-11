@@ -203,6 +203,8 @@ class Dex(object):
     def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0):
         nonce = self.client.eth.get_transaction_count(address)
         gas = gas if gas > 0 else self.estimate_gas()
+        print("gasPrice", self.client.eth.gasPrice / 1000000000)
+        print("gas", gas)
         gaslimit = gaslimit if gaslimit > 0 else gas
         tx = {}
         if type == 0:
