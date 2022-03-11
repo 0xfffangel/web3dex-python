@@ -111,7 +111,7 @@ class Dex(object):
         return self.allowance(wallet_address, address) > 0
 
     def estimate_gas(self):
-           return (((self.client.eth.gasPrice) / 1000000000)) + ((self.client.eth.gasPrice) / 1000000000) * (int(40) / 100)
+           return (((self.client.eth.gasPrice) / 1000000000)) * 1.5
 
     def swapExactETHForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
         timeout = (int(time.time()) + 60)
