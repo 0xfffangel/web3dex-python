@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap
 import unittest
 import logging
 import sys
@@ -49,6 +49,12 @@ class TestDex(unittest.TestCase):
         USDT = "0x04068da6c83afcfa0e13ba15a6696662335d5b75"
         spiritswap = Spiritswap()
         self.check(spiritswap, USDT)
+
+    def testKnightswap(self):
+        log = logging.getLogger("testKnightswap")
+        USDC = "0xD23811058Eb6e7967D9a00dc3886E75610c4AbBa"
+        knightswap = Knightswap()
+        self.check(knightswap, USDC)
 
     def testSolidly(self):
         log = logging.getLogger("testSolidly")

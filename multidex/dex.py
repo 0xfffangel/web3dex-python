@@ -291,6 +291,10 @@ class Pangolin(Dex):
     def __init__(self):
         super().__init__("./configs/pangolin.json")
 
+class Knightswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/knightswap.json")
+
 class Solidly(Dex):
     def __init__(self):
         super().__init__("./configs/solidly.json")
