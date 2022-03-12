@@ -247,6 +247,9 @@ class Dex(object):
                 if time.time() > timeout:
                     raise Exception("Unconfirmed tx after 1 min")
 
+    def getTransaction(self, tx_hash):
+        return self.client.eth.getTransaction(tx_hash)
+
 class Pancakeswap(Dex):
     def __init__(self):
         super().__init__("./configs/pancakeswap.json")
