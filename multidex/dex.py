@@ -24,10 +24,14 @@ class Dex(object):
         self.factory_contract = self.client.eth.contract(address=self.factory_address, abi=self.factory_abi)
         self.router_contract = self.client.eth.contract(address=self.router_address, abi=self.router_abi)
         self.base_address = Web3.toChecksumAddress(config["BASE_CONTRACT"])
+        self.explorer = config["EXPLORER"]
         self.decimals_ = {}
 
     def base_address(self):
         return self.base_address
+
+    def explorer(self):
+        return self.explorer
 
     def decimals(self, token, fallback = None):
         token = Web3.toChecksumAddress(token)

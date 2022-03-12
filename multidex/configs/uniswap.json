@@ -6,5 +6,6 @@
     "ROUTER_ABI_FILE": "./abi/uniswapv2_router_abi.json",
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "ETH",
-    "BASE_CONTRACT": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    "BASE_CONTRACT": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "EXPLORER": "https://etherscan.io"
 }

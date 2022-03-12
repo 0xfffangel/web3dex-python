@@ -6,5 +6,6 @@
     "ROUTER_ABI_FILE": "./abi/pancakeswap_router_abi.json",
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "BNB",
-    "BASE_CONTRACT": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    "BASE_CONTRACT": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+    "EXPLORER": "https://explorer.binance.org/"
 }
