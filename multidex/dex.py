@@ -115,9 +115,9 @@ class Dex(object):
         return self.allowance(wallet_address, address) > 0
 
     def estimate_gas(self):
-           return (((self.client.eth.gasPrice) / 1000000000)) * 1.2
+           return self.client.eth.gasPrice / 1000000000
 
-    def swapExactETHForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
+    def swapExactETHForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         timeout = (int(time.time()) + 60)
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
@@ -132,15 +132,15 @@ class Dex(object):
             return self.router_contract.functions.swapExactAVAXForTokens(
                 min_tokens, [self.base_address, token], address, timeout
                 ).buildTransaction(
-                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
                     )
         return self.router_contract.functions.swapExactETHForTokens(
             min_tokens, [self.base_address, token], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
                 )
 
-    def swapExactTokensForETH(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
+    def swapExactTokensForETH(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         timeout = (int(time.time()) + 60)
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
@@ -155,15 +155,15 @@ class Dex(object):
             return self.router_contract.functions.swapExactTokensForAVAX(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None, gasmultiplier=gasmultiplier)
                 )
         return self.router_contract.functions.swapExactTokensForETH(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None, gasmultiplier=gasmultiplier)
                 )
 
-    def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
+    def swapExactTokensForTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         timeout = (int(time.time()) + 60)
         amount = int(float(amount) * self.decimals(token))
         amount_out = self.price(token, self.base_address, amount)
@@ -173,10 +173,10 @@ class Dex(object):
         return self.router_contract.functions.swapExactTokensForTokens(
             min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
                 )
 
-    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000):
+    def swapExactTokensForETHSupportingFeeOnTransferTokens(self, amount, token, address, slippage = 5, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         timeout = (int(time.time()) + 60)
         address = Web3.toChecksumAddress(address)
         token = Web3.toChecksumAddress(token)
@@ -187,26 +187,26 @@ class Dex(object):
             return self.router_contract.functions.swapExactTokensForAVAXSupportingFeeOnTransferTokens(
                 amount, min_tokens, [token, self.base_address], address, timeout
                 ).buildTransaction(
-                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
                     )
         return self.router_contract.functions.swapExactTokensForETHSupportingFeeOnTransferTokens(
             amount, min_tokens, [token, self.base_address], address, timeout
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
                 )
 
-    def approve(self, token, address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000):
+    def approve(self, token, address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         token = Web3.toChecksumAddress(token)
         contract = self.client.eth.contract(address=token, abi=self.liquidity_abi)
         return contract.functions.approve(
             self.router_address, amount
             ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=0)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=0, gasmultiplier=gasmultiplier)
                 )
 
-    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0):
+    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit = 0, gasmultiplier = 1.2):
         nonce = self.client.eth.get_transaction_count(address)
-        gas = gas if gas > 0 else self.estimate_gas()
+        gas = gas if gas > 0 else self.estimate_gas() * gasmultiplier
         print("gasPrice", self.client.eth.gasPrice / 1000000000)
         print("gas", gas)
         gaslimit = gaslimit if gaslimit > 0 else gas
