@@ -12,3 +12,4 @@ from .dex import Traderjoe
 from .dex import Pangolin
 from .dex import Solidly
 from .dex import Knightswap
+from .dex import Solidex

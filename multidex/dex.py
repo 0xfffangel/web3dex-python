@@ -282,10 +282,6 @@ class Spiritswap(Dex):
     def __init__(self):
         super().__init__("./configs/spiritswap.json")
 
-class Spiritswap(Dex):
-    def __init__(self):
-        super().__init__("./configs/spiritswap.json")
-
 class Waultswap(Dex):
     def __init__(self):
         super().__init__("./configs/waultswap.json")
@@ -313,3 +309,15 @@ class Solidly(Dex):
 
     def getPair(self, inToken, outToken):
         return self.factory_contract.functions.getPair(inToken, outToken, True).call()
+
+class Solidex(Dex):
+    def __init__(self):
+        super().__init__("./configs/solidex.json")
+
+    def getAmountsOut(self, amount, inToken, outToken):
+        routes = [{ "from": inToken, "to": outToken, "stable": True },
+                { "from": inToken, "to": outToken, "stable": False }]
+        return self.router_contract.functions.getAmountsOut(amount, routes).call()[-1]
+
+    def getPair(self, inToken, outToken):
+        return self.factory_contract.functions.getPair(inToken, outToken, False).call()
