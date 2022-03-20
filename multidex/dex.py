@@ -25,7 +25,11 @@ class Dex(object):
         self.router_contract = self.client.eth.contract(address=self.router_address, abi=self.router_abi)
         self.base_address = Web3.toChecksumAddress(config["BASE_CONTRACT"])
         self.explorer = config["EXPLORER"]
+        self.base_symbol = config["BASE_SYMBOL"]
         self.decimals_ = {}
+
+    def base_symbol(self):
+        return self.base_symbol
 
     def base_address(self):
         return self.base_address
