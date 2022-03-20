@@ -5,7 +5,7 @@
     "FACTORY_ABI_FILE": "./abi/solidex_factory_abi.json",
     "ROUTER_ABI_FILE": "./abi/solidex_router_abi.json",
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
-    "BASE_SYMBOL": "WFTM",
+    "BASE_SYMBOL": "FTM",
     "BASE_CONTRACT": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
     "EXPLORER": "https://ftmscan.com"
 }
