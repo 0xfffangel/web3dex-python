@@ -9,6 +9,8 @@ from web3.exceptions import ABIFunctionNotFound, TransactionNotFound, BadFunctio
 class Dex(object):
 
     def __init__(self, config):
+        base = os.path.basename(config)
+        self.platform = os.path.splitext(base)[0]
         dir = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(dir, config)) as json_file:
             config = json.load(json_file)
@@ -27,6 +29,9 @@ class Dex(object):
         self.explorer = config["EXPLORER"]
         self.base_symbol = config["BASE_SYMBOL"]
         self.decimals_ = {}
+
+    def platform(self):
+        return self.platform
 
     def base_symbol(self):
         return self.base_symbol
