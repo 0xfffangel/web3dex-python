@@ -13,3 +13,20 @@ from .dex import Pangolin
 from .dex import Solidly
 from .dex import Knightswap
 from .dex import Solidex
+
+__all__ = [
+    Dex,
+    Pancakeswap,
+    Stellaswap,
+    Uniswap,
+    Spookyswap,
+    Beamswap,
+    Quickswap,
+    Spiritswap,
+    Waultswap,
+    Traderjoe,
+    Pangolin,
+    Solidly,
+    Knightswap,
+    Solidex
+]
