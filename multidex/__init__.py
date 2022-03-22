@@ -15,18 +15,18 @@ from .dex import Knightswap
 from .dex import Solidex
 
 __all__ = [
-    Dex,
-    Pancakeswap,
-    Stellaswap,
-    Uniswap,
-    Spookyswap,
-    Beamswap,
-    Quickswap,
-    Spiritswap,
-    Waultswap,
-    Traderjoe,
-    Pangolin,
-    Solidly,
-    Knightswap,
-    Solidex
+    Dex(),
+    Pancakeswap(),
+    Stellaswap(),
+    Uniswap(),
+    Spookyswap(),
+    Beamswap(),
+    Quickswap(),
+    Spiritswap(),
+    Waultswap(),
+    Traderjoe(),
+    Pangolin(),
+    Solidly(),
+    Knightswap(),
+    Solidex()
 ]
