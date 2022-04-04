@@ -204,30 +204,29 @@ class Dex(object):
                 self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
                 )
 
-    def transfer(self, wallet_address, to_address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000):
-        to_address = Web3.toChecksumAddress(to_address)
-        contract = self.client.eth.contract(address=self.base_address, abi=self.liquidity_abi)
-        return contract.functions.transfer(
-            to_address, amount
+    def approve(self, token, address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+        token = Web3.toChecksumAddress(token)
+        contract = self.client.eth.contract(address=token, abi=self.liquidity_abi)
+        return contract.functions.approve(
+            self.router_address, amount
             ).buildTransaction(
-                self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=0)
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=0, gasmultiplier=gasmultiplier)
                 )
-
-    def transfer(self, wallet_address, to_address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000):
+    def transfer(self, wallet_address, to_address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         to_address = Web3.toChecksumAddress(to_address)
         contract = self.client.eth.contract(address=self.base_address, abi=self.liquidity_abi)
         return contract.functions.transfer(
             to_address, amount
             ).buildTransaction(
-                self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=0)
+                self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=0, gasmultiplier=gasmultiplier)
                 )
 
     def move(self, wallet_address, to_address, amount, gas = 0,  gaslimit = 300000):
         return self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=amount, to_address=to_address)
 
-    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None):
+    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None, gasmultiplier = 1.2):
         nonce = self.client.eth.get_transaction_count(address)
-        gas = gas if gas > 0 else self.estimate_gas()
+        gas = gas if gas > 0 else self.estimate_gas() * gasmultiplier
         print("gasPrice", self.client.eth.gasPrice / 1000000000)
         print("gas", gas)
         gaslimit = gaslimit if gaslimit > 0 else gas
