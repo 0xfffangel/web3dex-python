@@ -221,8 +221,9 @@ class Dex(object):
                 self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=0, gasmultiplier=gasmultiplier)
                 )
 
-    def move(self, wallet_address, to_address, amount, gas = 0,  gaslimit = 300000):
-        return self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=amount, to_address=to_address)
+    def move(self, wallet_address, to_address, amount, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+        amount = Web3.toWei(amount, 'ether')
+        return self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=amount, to_address=to_address, gasmultiplier=gasmultiplier)
 
     def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None, gasmultiplier = 1.2):
         nonce = self.client.eth.get_transaction_count(address)
@@ -248,7 +249,7 @@ class Dex(object):
             'type': "0x02"
         }
         if amount != None:
-            tx["value"] = Web3.toWei(amount, 'ether')
+            tx["value"] = amount
         if to_address != None:
             to_address = Web3.toChecksumAddress(to_address)
             tx["to"] = to_address
