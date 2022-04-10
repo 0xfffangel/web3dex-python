@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap
 import unittest
 import logging
 import sys
@@ -105,6 +105,12 @@ class TestDex(unittest.TestCase):
         BUSD = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
         babyswap = Babyswap()
         self.check(babyswap, BUSD)
+
+    def testBiswap(self):
+        log = logging.getLogger("testBiswap")
+        BUSD = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+        biswap = Biswap()
+        self.check(biswap, BUSD)
 
 if __name__ == '__main__':
     logging.basicConfig( stream=sys.stderr )
