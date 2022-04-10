@@ -278,6 +278,10 @@ class Dex(object):
     def getTransaction(self, tx_hash):
         return self.client.eth.getTransaction(tx_hash)
 
+class Pinkswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/pinkswap.json")
+
 class Apeswap(Dex):
     def __init__(self):
         super().__init__("./configs/apeswap.json")
