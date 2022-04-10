@@ -17,11 +17,13 @@ from .dex import Apeswap
 from .dex import Pinkswap
 from .dex import Babyswap
 from .dex import Biswap
+from .dex import Mdexswap
 
 __all__ = [
     Apeswap(),
     Biswap(),
     Babyswap(),
+    Mdexswap(),
     Pinkswap(),
     Pancakeswap(),
     Stellaswap(),
