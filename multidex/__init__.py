@@ -13,8 +13,10 @@ from .dex import Pangolin
 from .dex import Solidly
 from .dex import Knightswap
 from .dex import Solidex
+from .dex import Apeswap
 
 __all__ = [
+    Apeswap(),
     Pancakeswap(),
     Stellaswap(),
     Uniswap(),

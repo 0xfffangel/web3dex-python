@@ -1,7 +1,9 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap
 import unittest
 import logging
 import sys
+
+from multidex.dex import Apeswap
 
 class TestDex(unittest.TestCase):
 
@@ -85,6 +87,12 @@ class TestDex(unittest.TestCase):
         SEX = "0xD31Fcd1f7Ba190dBc75354046F6024A9b86014d7"
         solidex = Solidex()
         self.check(solidex, SEX)
+
+    def testApeswap(self):
+        log = logging.getLogger("testApeswap")
+        BUSD = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+        apeswap = Apeswap()
+        self.check(apeswap, BUSD)
 
 if __name__ == '__main__':
     logging.basicConfig( stream=sys.stderr )
