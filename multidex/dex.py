@@ -282,6 +282,10 @@ class Pinkswap(Dex):
     def __init__(self):
         super().__init__("./configs/pinkswap.json")
 
+class Babyswap(Dex):
+    def __init__(self):
+        super().__init__("./configs/babyswap.json")
+
 class Apeswap(Dex):
     def __init__(self):
         super().__init__("./configs/apeswap.json")

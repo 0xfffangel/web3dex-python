@@ -15,9 +15,11 @@ from .dex import Knightswap
 from .dex import Solidex
 from .dex import Apeswap
 from .dex import Pinkswap
+from .dex import Babyswap
 
 __all__ = [
     Apeswap(),
+    Babyswap(),
     Pinkswap(),
     Pancakeswap(),
     Stellaswap(),
