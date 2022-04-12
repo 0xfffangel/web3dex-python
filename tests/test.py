@@ -24,9 +24,10 @@ class TestDex(unittest.TestCase):
 
     def testPancakeswap(self):
         log = logging.getLogger("testPancakeswap")
-        BUSD = "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+        #BUSD = "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+        CAKE = "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
         pancakeswap = Pancakeswap()
-        self.check(pancakeswap, BUSD)
+        self.check(pancakeswap, CAKE)
 
     def testUniswap(self):
         log = logging.getLogger("testUniswap")

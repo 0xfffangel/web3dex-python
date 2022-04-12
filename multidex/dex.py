@@ -80,7 +80,11 @@ class Dex(object):
 
     def reserve_ratio(self, token):
         reserves = self.reserves(token)
-        if int(self.base_address, 16) < int(token, 16):
+        token = Web3.toChecksumAddress(token)
+        pair_address = self.getPair(self.base_address, token)
+        pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
+        token0 = pair_contract.functions.token0().call()
+        if token0 == token:
             return reserves[1] / reserves[0]
         else:
             return reserves[0] / reserves[1]
@@ -101,7 +105,7 @@ class Dex(object):
         decimals = self.decimals(outToken)
         self.sync(inToken, outToken)
         amount = amount * decimals
-        price = self.getAmountsOut(amount, inToken, outToken)
+        price = self.getAmountsOut(amount, outToken, inToken)
         return price / decimals
 
     def getAmountsOut(self, amount, inToken, outToken):
