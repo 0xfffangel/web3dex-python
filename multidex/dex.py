@@ -57,6 +57,11 @@ class Dex(object):
         except ValueError as err:
             logging.exception(err)
 
+    def exist(self, token):
+        token_address = Web3.toChecksumAddress(token)
+        pair_address = self.getPair(self.base_address, token_address)
+        return int(pair_address, 16) != 0
+
     def reserves(self, token):
         token_address = Web3.toChecksumAddress(token)
         pair_address = self.getPair(self.base_address, token_address)
