@@ -18,6 +18,7 @@ from .dex import Pinkswap
 from .dex import Babyswap
 from .dex import Biswap
 from .dex import Mdexswap
+from .dex import Safemoon
 
 __all__ = [
     Apeswap(),
@@ -26,6 +27,7 @@ __all__ = [
     Mdexswap(),
     Pinkswap(),
     Pancakeswap(),
+    Safemoon(),
     Stellaswap(),
     Uniswap(),
     Spookyswap(),

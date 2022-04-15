@@ -291,6 +291,10 @@ class Mdexswap(Dex):
     def __init__(self):
         super().__init__("./configs/mdexswap.json")
 
+class Safemoon(Dex):
+    def __init__(self):
+        super().__init__("./configs/safemoon.json")
+
 class Biswap(Dex):
     def __init__(self):
         super().__init__("./configs/biswap.json")

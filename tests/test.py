@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap, Mdexswap
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap, Mdexswap, Safemoon
 import unittest
 import logging
 import sys
@@ -28,6 +28,12 @@ class TestDex(unittest.TestCase):
         CAKE = "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
         pancakeswap = Pancakeswap()
         self.check(pancakeswap, CAKE)
+
+    def testSafemoon(self):
+        log = logging.getLogger("testSafemoon")
+        BUSD = "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+        safemoon = Safemoon()
+        self.check(safemoon, BUSD)
 
     def testUniswap(self):
         log = logging.getLogger("testUniswap")
