@@ -57,42 +57,49 @@ class Dex(object):
         except ValueError as err:
             logging.exception(err)
 
-    def exist(self, token):
-        token_address = Web3.toChecksumAddress(token)
-        pair_address = self.getPair(self.base_address, token_address)
+    def reversed(self, input = None, output = None):
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        return int(output, 16) < int(input, 16)
+
+    def exist(self, input = None, output = None):
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        pair_address = self.getPair(input, output)
         return int(pair_address, 16) != 0
 
-    def reserves(self, token):
-        token_address = Web3.toChecksumAddress(token)
-        pair_address = self.getPair(self.base_address, token_address)
+    def reserves(self, input = None, output = None):
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        pair_address = self.getPair(output, input)
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
-        if int(self.base_address, 16) < int(token, 16):
-            reserves[0] = reserves[0] / self.decimals(self.base_address)
-            reserves[1] = reserves[1] / self.decimals(token)
+        if self.reversed(input, output):
+            reserves[0] = reserves[0] / self.decimals(output)
+            reserves[1] = reserves[1] / self.decimals(input)
         else:
-            reserves[0] = reserves[0] / self.decimals(token)
-            reserves[1] = reserves[1] / self.decimals(self.base_address)
+            reserves[0] = reserves[0] / self.decimals(input)
+            reserves[1] = reserves[1] / self.decimals(output)
         return reserves
     
-    def liquidity(self, token):
-        reserves = self.reserves(token)
-        decimals = self.decimals(token)
-        if int(self.base_address, 16) < int(token, 16):
+    def liquidity(self, input = None, output = None):
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        reserves = self.reserves(input, output)
+        decimals = self.decimals(output)
+        if self.reversed(input, output):
             return reserves[0] / decimals
         else:
             return reserves[1] / decimals
 
-    def reserve_ratio(self, token):
-        reserves = self.reserves(token)
-        token = Web3.toChecksumAddress(token)
-        pair_address = self.getPair(self.base_address, token)
-        pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
-        token0 = pair_contract.functions.token0().call()
-        if token0 == token:
-            return reserves[1] / reserves[0]
-        else:
+    def reserve_ratio(self, input = None, output = None):
+        reserves = self.reserves(input, output)
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        if self.reversed(input, output):
             return reserves[0] / reserves[1]
+        else:
+            return reserves[1] / reserves[0]
 
     def balance(self, wallet_address, token = None):
         if token == None:
@@ -102,15 +109,13 @@ class Dex(object):
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance / self.decimals(token)
 
-    def price(self, outToken, inToken = None, amount = 1):
-        if inToken is None:
-            inToken = self.base_address
-        inToken = Web3.toChecksumAddress(inToken)
-        outToken = Web3.toChecksumAddress(outToken)
-        decimals = self.decimals(outToken)
-        self.sync(inToken, outToken)
+    def price(self, output = None, input = None, amount = 1):
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        decimals = self.decimals(output)
+        self.sync(input, output)
         amount = amount * decimals
-        price = self.getAmountsOut(amount, outToken, inToken)
+        price = self.getAmountsOut(amount, output, input)
         return price / decimals
 
     def getAmountsOut(self, amount, inToken, outToken):
