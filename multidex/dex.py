@@ -62,13 +62,25 @@ class Dex(object):
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
         return int(output, 16) < int(input, 16)
 
-    def exist(self, input = None, output = None):
+    def exist(self, input = None, output = None, intermediate = None):
+        if intermediate is None:
+            return self.__exist(input, output)
+        return self.__exist(input, intermediate) and self.exist(intermediate, output)
+
+    def __exist(self, input = None, output = None):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
         pair_address = self.getPair(input, output)
         return int(pair_address, 16) != 0
 
-    def reserves(self, input = None, output = None):
+    def reserves(self, input = None, output = None, intermediate = None):
+        if intermediate is None:
+            return self.__reserves(input, output)
+        begin = self.reserves(input, intermediate)
+        end = self.reserves(intermediate, output)
+        return [end[0] * begin[0], end[1] * begin[1]]
+
+    def __reserves(self, input = None, output = None):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
         pair_address = self.getPair(output, input)
@@ -92,10 +104,9 @@ class Dex(object):
         else:
             return reserves[1] / decimals
 
-    def reserve_ratio(self, input = None, output = None):
-        reserves = self.reserves(input, output)
-        input = self.base_address if input is None else Web3.toChecksumAddress(input)
-        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+
+    def reserve_ratio(self, input = None, output = None, intermediate = None):
+        reserves = self.reserves(input, output, intermediate)
         if self.reversed(input, output):
             return reserves[0] / reserves[1]
         else:
