@@ -19,6 +19,7 @@ from .dex import Babyswap
 from .dex import Biswap
 from .dex import Mdexswap
 from .dex import Safemoon
+from .dex import Solarbeam
 
 __all__ = [
     Apeswap(),
@@ -39,5 +40,6 @@ __all__ = [
     Pangolin(),
     Solidly(),
     Knightswap(),
+    Solarbeam(),
     Solidex()
 ]

@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap, Mdexswap, Safemoon
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap, Mdexswap, Safemoon, Solarbeam
 import unittest
 import logging
 import sys
@@ -76,6 +76,12 @@ class TestDex(unittest.TestCase):
         GLINT = "0xcd3b51d98478d53f4515a306be565c6eebef1d58"
         beamswap = Beamswap()
         self.check(beamswap, GLINT)
+
+    def testSolarbeam(self):
+        log = logging.getLogger("testSolarbeam")
+        USDC = "0xe3f5a90f9cb311505cd691a46596599aa1a0ad7d"
+        solarbeam = Solarbeam()
+        self.check(solarbeam, USDC)
 
     def testQuickswap(self):
         log = logging.getLogger("testQuickswap")

@@ -380,6 +380,10 @@ class Knightswap(Dex):
     def __init__(self):
         super().__init__("./configs/knightswap.json")
 
+class Solarbeam(Dex):
+    def __init__(self):
+        super().__init__("./configs/solarbeam.json")
+
 class Solidly(Dex):
     def __init__(self):
         super().__init__("./configs/solidly.json")
