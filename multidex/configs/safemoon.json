@@ -7,5 +7,6 @@
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "BNB",
     "BASE_CONTRACT": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-    "EXPLORER": "https://explorer.binance.org/"
+    "EXPLORER": "https://explorer.binance.org/",
+    "TOKEN": "0x8076c74c5e3f5852037f31ff0093eeb8c8add8d3"
 }
