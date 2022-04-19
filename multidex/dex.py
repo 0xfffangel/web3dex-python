@@ -121,16 +121,20 @@ class Dex(object):
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance / self.decimals(token)
 
-    def price(self, input = None, output = None, amount = 1):
+    def price(self, input = None, output = None, intermediate = None, amount = 1):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
         self.sync(input, output)
         amount = amount * self.decimals(input)
-        price = self.getAmountsOut(amount, input, output)
+        price = self.getAmountsOut(amount, input, output, intermediate)
         return price / self.decimals(output)
 
-    def getAmountsOut(self, amount, inToken, outToken):
-        return self.router_contract.functions.getAmountsOut(amount, [inToken, outToken]).call()[-1]
+    def getAmountsOut(self, amount, inToken, outToken, middleToken = None):
+        if middleToken is None:
+            path = [inToken, outToken]
+        else:
+            path = [inToken, middleToken, outToken]
+        return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
 
     def getPair(self, inToken, outToken):
         return self.factory_contract.functions.getPair(inToken, outToken).call()
