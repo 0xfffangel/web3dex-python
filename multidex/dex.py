@@ -124,7 +124,7 @@ class Dex(object):
     def price(self, input = None, output = None, intermediate = None, amount = 1):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
-        intermediate = None if output is None else Web3.toChecksumAddress(intermediate)
+        intermediate = None if intermediate is None else Web3.toChecksumAddress(intermediate)
         self.sync(input, output)
         amount = amount * self.decimals(input)
         price = self.getAmountsOut(amount, input, output, intermediate)
