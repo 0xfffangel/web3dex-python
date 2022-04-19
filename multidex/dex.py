@@ -79,6 +79,10 @@ class Dex(object):
             return self.__reserves(input, output)
         begin = self.reserves(input, intermediate)
         end = self.reserves(intermediate, output)
+        if self.reversed(input, intermediate):
+            begin = [ begin[1], begin[0] ]
+        if self.reversed(intermediate, output):
+            end = [ end[0], end[1] ]
         return [end[0] * begin[0], end[1] * begin[1]]
 
     def __reserves(self, input = None, output = None):
