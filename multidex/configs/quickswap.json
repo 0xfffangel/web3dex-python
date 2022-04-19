@@ -7,5 +7,6 @@
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "MATIC",
     "BASE_CONTRACT": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-    "EXPLORER": "https://polygonscan.com"
+    "EXPLORER": "https://polygonscan.com",
+    "TOKEN": "0x6c28aef8977c9b773996d0e8376d2ee379446f2f"
 }

@@ -7,5 +7,6 @@
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "ETH",
     "BASE_CONTRACT": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    "EXPLORER": "https://etherscan.io"
+    "EXPLORER": "https://etherscan.io",
+    "TOKEN": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
 }

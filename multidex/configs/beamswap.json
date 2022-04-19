@@ -7,5 +7,6 @@
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "GLMR",
     "BASE_CONTRACT": "0xacc15dc74880c9944775448304b263d191c6077f",
-    "EXPLORER": "https://moonscan.io"
+    "EXPLORER": "https://moonscan.io",
+    "TOKEN": "0xcd3b51d98478d53f4515a306be565c6eebef1d58"
 }

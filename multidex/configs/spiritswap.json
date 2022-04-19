@@ -7,5 +7,6 @@
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "FTM",
     "BASE_CONTRACT": "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83",
-    "EXPLORER": "https://ftmscan.com"
+    "EXPLORER": "https://ftmscan.com",
+    "TOKEN": "0x5cc61a78f164885776aa610fb0fe1257df78e59b"
 }
