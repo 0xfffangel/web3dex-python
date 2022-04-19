@@ -20,6 +20,8 @@ from .dex import Biswap
 from .dex import Mdexswap
 from .dex import Safemoon
 from .dex import Solarbeam
+from .dex import Solarflare
+from .dex import Zenlink
 
 __all__ = [
     Apeswap(),
@@ -41,5 +43,7 @@ __all__ = [
     Solidly(),
     Knightswap(),
     Solarbeam(),
+    Solarflare(),
+    Zenlink(),
     Solidex()
 ]

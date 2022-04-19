@@ -1,4 +1,4 @@
-from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap, Mdexswap, Safemoon, Solarbeam
+from multidex import Pancakeswap, Stellaswap, Uniswap, Spookyswap, Beamswap, Quickswap, Traderjoe, Spiritswap, Solidly, Knightswap, Solidex, Apeswap, Pinkswap, Babyswap, Biswap, Mdexswap, Safemoon, Solarbeam, Solarflare, Zenlink
 import unittest
 import logging
 import sys
@@ -8,8 +8,11 @@ from multidex.dex import Apeswap
 class TestDex(unittest.TestCase):
 
     def check(self, dex, token):
+        exist = dex.exist(token)
+        self.assertEqual(exist,True)
+
         reserves = dex.reserves(token)
-        self.assertEqual(len(reserves), 3, "invalid reserves")
+        self.assertGreaterEqual(len(reserves), 2, "invalid reserves")
         self.assertNotEqual(reserves[0], 0, "invalid reserve0")
         self.assertNotEqual(reserves[1], 0, "invalid reserve0")
 
@@ -19,7 +22,7 @@ class TestDex(unittest.TestCase):
         reserve_ratio = dex.reserve_ratio(token)
         self.assertNotEqual(reserve_ratio, 0, "invalid reserve_ratio")
 
-        price = dex.price(token)
+        price = dex.price(token, dex.base_address)
         self.assertNotEqual(price, 0, "invalid price")
 
     def testPancakeswap(self):
@@ -76,6 +79,18 @@ class TestDex(unittest.TestCase):
         GLINT = "0xcd3b51d98478d53f4515a306be565c6eebef1d58"
         beamswap = Beamswap()
         self.check(beamswap, GLINT)
+
+    def testZenlink(self):
+        log = logging.getLogger("testZenlink")
+        BUSD = "0xa649325aa7c5093d12d6f98eb4378deae68ce23f"
+        zenlink = Zenlink()
+        self.check(zenlink, zenlink.token)
+
+    def testSolarflare(self):
+        log = logging.getLogger("testSolarflare")
+        BUSD = "0xa649325aa7c5093d12d6f98eb4378deae68ce23f"
+        solarflare = Solarflare()
+        self.check(solarflare, BUSD)
 
     def testSolarbeam(self):
         log = logging.getLogger("testSolarbeam")

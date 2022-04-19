@@ -356,6 +356,16 @@ class Beamswap(Dex):
     def __init__(self):
         super().__init__("./configs/beamswap.json")
 
+class Zenlink(Dex):
+    def __init__(self):
+        super().__init__("./configs/zenlink.json")
+
+    def sync(self, inToken, outToken):
+        return
+
+class Solarflare(Dex):
+    def __init__(self):
+        super().__init__("./configs/solarflare.json")
 class Quickswap(Dex):
     def __init__(self):
         super().__init__("./configs/quickswap.json")
