@@ -98,17 +98,26 @@ class Dex(object):
             reserves[0] = reserves[0] / self.decimals(input)
             reserves[1] = reserves[1] / self.decimals(output)
         return reserves
+
+    def liquidity_in(self, input = None, output = None, intermediate = None):
+        if intermediate is None:
+            return self.__liquidity(input, output, True)
+        return self.__liquidity(input, intermediate, True)
     
-    def liquidity(self, input = None, output = None):
+    def liquidity_out(self, input = None, output = None, intermediate = None):
+        if intermediate is None:
+            return self.__liquidity(input, output, False)
+        return self.__liquidity(intermediate, output, true)
+
+    def __liquidity(self, input = None, output = None, inverse = False):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
         reserves = self.reserves(input, output)
-        decimals = self.decimals(output)
         if self.reversed(input, output):
-            return reserves[0] / decimals
-        else:
-            return reserves[1] / decimals
-
+            reserves = [ reserves[1], reserves[0] ]
+        if inverse:
+            return reserves[0]
+        return reserves[1]
 
     def reserve_ratio(self, input = None, output = None, intermediate = None):
         reserves = self.reserves(input, output, intermediate)
