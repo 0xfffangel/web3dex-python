@@ -77,13 +77,13 @@ class Dex(object):
     def reserves(self, input = None, output = None, intermediate = None):
         if intermediate is None:
             return self.__reserves(input, output)
-        begin = self.reserves(input, intermediate)
-        end = self.reserves(intermediate, output)
-        if self.reversed(input, intermediate):
+        begin = self.__reserves(intermediate, input)
+        end = self.__reserves(intermediate, output)
+        if self.reversed(intermediate, input):
             begin = [ begin[1], begin[0] ]
         if self.reversed(intermediate, output):
-            end = [ end[0], end[1] ]
-        return [end[0] * begin[0], end[1] * begin[1]]
+            end = [ end[1], end[0] ]
+        return [end[1] * begin[0], end[0] * begin[1]]
 
     def __reserves(self, input = None, output = None):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
