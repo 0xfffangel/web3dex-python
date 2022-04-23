@@ -157,10 +157,10 @@ class Dex(object):
             path = [inToken, middleToken, outToken]
         return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
 
-    def getPair(self, inToken, outToken, refresh = False):
+    def getPair(self, inToken, outToken):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
-        if not refresh and (input + output) in self.__pairs:
+        if (input + output) in self.__pairs:
             return self.__pairs[input + output]
         pair = self.factory_contract.functions.getPair(inToken, outToken).call()
         self.__pairs[input + output] = pair
