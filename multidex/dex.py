@@ -107,7 +107,7 @@ class Dex(object):
     def liquidity_out(self, input = None, output = None, intermediate = None):
         if intermediate is None:
             return self.__liquidity(input, output, False)
-        return self.__liquidity(intermediate, output, true)
+        return self.__liquidity(intermediate, output, False)
 
     def __liquidity(self, input = None, output = None, inverse = False):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
