@@ -29,7 +29,9 @@ class Dex(object):
         self.explorer = config["EXPLORER"]
         self.base_symbol = config["BASE_SYMBOL"]
         self.token = config["TOKEN"]
-        self.decimals_ = {}
+        self.__decimals = {}
+        self.__pairs = {}
+        self.__reserves = {}
 
     def platform(self):
         return self.platform
@@ -43,17 +45,19 @@ class Dex(object):
     def explorer(self):
         return self.explorer
 
-    def decimals(self, token, fallback = None):
+    def decimals(self, token, fallback = None, refresh = False):
         token = Web3.toChecksumAddress(token)
         if fallback is not None:
-            self.decimals_[token] = fallback
+            self.__decimals[token] = fallback
+        if not refresh and token in self.__decimals:
+            return self.__decimals[token]
         try:
             balance_contract = self.client.eth.contract(address=token, abi=self.factory_abi)
             decimals = balance_contract.functions.decimals().call()
             return 10 ** decimals
         except ABIFunctionNotFound:
-            if token in self.decimals_:
-                return 10 ** self.decimals_[token]
+            if token in self.__decimals:
+                return 10 ** self.__decimals[token]
             return 10 ** 18
         except ValueError as err:
             logging.exception(err)
@@ -85,10 +89,12 @@ class Dex(object):
             end = [ end[1], end[0] ]
         return [end[1] * begin[0], end[0] * begin[1]]
 
-    def __reserves(self, input = None, output = None):
+    def __reserves(self, input = None, output = None, refresh = False):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
-        pair_address = self.getPair(output, input)
+        pair_address = self.getPair(output, input, refresh)
+        if not refresh and pair_address in self.__reserves:
+            return self.__reserves[pair_address]
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
         if self.reversed(input, output):
@@ -97,6 +103,7 @@ class Dex(object):
         else:
             reserves[0] = reserves[0] / self.decimals(input)
             reserves[1] = reserves[1] / self.decimals(output)
+        self.__reserves[pair_address] = reserves
         return reserves
 
     def liquidity_in(self, input = None, output = None, intermediate = None):
@@ -150,8 +157,14 @@ class Dex(object):
             path = [inToken, middleToken, outToken]
         return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
 
-    def getPair(self, inToken, outToken):
-        return self.factory_contract.functions.getPair(inToken, outToken).call()
+    def getPair(self, inToken, outToken, refresh = False):
+        input = self.base_address if input is None else Web3.toChecksumAddress(input)
+        output = self.base_address if output is None else Web3.toChecksumAddress(output)
+        if not refresh and (input + output) in self.__pairs:
+            return self.__pairs[input + output]
+        pair = self.factory_contract.functions.getPair(inToken, outToken).call()
+        self.__pairs[input + output] = pair
+        return pair
 
     def sync(self, inToken, outToken):
         pair = self.getPair(inToken, outToken)
