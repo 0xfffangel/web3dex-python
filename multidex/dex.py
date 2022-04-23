@@ -31,7 +31,7 @@ class Dex(object):
         self.token = config["TOKEN"]
         self.__decimals = {}
         self.__pairs = {}
-        self.__reserves = {}
+        self.__pairs_reserves = {}
 
     def platform(self):
         return self.platform
@@ -78,11 +78,11 @@ class Dex(object):
         pair_address = self.getPair(input, output)
         return int(pair_address, 16) != 0
 
-    def reserves(self, input = None, output = None, intermediate = None):
+    def reserves(self, input = None, output = None, intermediate = None, refresh = False):
         if intermediate is None:
-            return self.__reserves(input, output)
-        begin = self.__reserves(intermediate, input)
-        end = self.__reserves(intermediate, output)
+            return self.__reserves(input, output, refresh)
+        begin = self.__reserves(intermediate, input, refresh)
+        end = self.__reserves(intermediate, output, refresh)
         if self.reversed(intermediate, input):
             begin = [ begin[1], begin[0] ]
         if self.reversed(intermediate, output):
@@ -92,9 +92,9 @@ class Dex(object):
     def __reserves(self, input = None, output = None, refresh = False):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
-        pair_address = self.getPair(output, input, refresh)
-        if not refresh and pair_address in self.__reserves:
-            return self.__reserves[pair_address]
+        pair_address = self.getPair(output, input)
+        if not refresh and pair_address in self.__pairs_reserves:
+            return self.__pairs_reserves[pair_address]
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
         reserves = pair_contract.functions.getReserves().call()
         if self.reversed(input, output):
@@ -103,7 +103,7 @@ class Dex(object):
         else:
             reserves[0] = reserves[0] / self.decimals(input)
             reserves[1] = reserves[1] / self.decimals(output)
-        self.__reserves[pair_address] = reserves
+        self.__pairs_reserves[pair_address] = reserves
         return reserves
 
     def liquidity_in(self, input = None, output = None, intermediate = None):
@@ -126,8 +126,8 @@ class Dex(object):
             return reserves[0]
         return reserves[1]
 
-    def reserve_ratio(self, input = None, output = None, intermediate = None):
-        reserves = self.reserves(input, output, intermediate)
+    def reserve_ratio(self, input = None, output = None, intermediate = None, refresh = False):
+        reserves = self.reserves(input, output, intermediate, refresh)
         if self.reversed(input, output):
             return reserves[0] / reserves[1]
         else:
@@ -158,12 +158,12 @@ class Dex(object):
         return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
 
     def getPair(self, inToken, outToken):
-        input = self.base_address if input is None else Web3.toChecksumAddress(input)
-        output = self.base_address if output is None else Web3.toChecksumAddress(output)
-        if (input + output) in self.__pairs:
-            return self.__pairs[input + output]
+        inToken = self.base_address if inToken is None else Web3.toChecksumAddress(inToken)
+        outToken = self.base_address if outToken is None else Web3.toChecksumAddress(outToken)
+        if (inToken + outToken) in self.__pairs:
+            return self.__pairs[inToken + outToken]
         pair = self.factory_contract.functions.getPair(inToken, outToken).call()
-        self.__pairs[input + output] = pair
+        self.__pairs[inToken + outToken] = pair
         return pair
 
     def sync(self, inToken, outToken):
