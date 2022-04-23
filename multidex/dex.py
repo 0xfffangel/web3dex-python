@@ -89,7 +89,10 @@ class Dex(object):
             begin = [ begin[1], begin[0] ]
         if self.reversed(intermediate, output):
             end = [ end[1], end[0] ]
-        return [end[1] * begin[0], end[0] * begin[1]]
+        res = [ end[0] * begin[1], end[1] * begin[0]]
+        if self.reversed(input, output):
+            res = [ res[1], res[0] ]
+        return res
 
     def __reserves(self, input = None, output = None, refresh = False):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
