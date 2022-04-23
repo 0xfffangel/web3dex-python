@@ -20,6 +20,8 @@ class Dex(object):
             self.router_abi = json.load(json_file)
         with open(os.path.join(dir, config["LIQUIDITY_ABI_FILE"])) as json_file:
             self.liquidity_abi = json.load(json_file)
+        with open(os.path.join(dir, "./abi/token_abi.json")) as json_file:
+            self.token_abi = json.load(json_file)
         self.client = Web3(Web3.HTTPProvider(config["PROVIDER"]))
         self.factory_address = Web3.toChecksumAddress(config["FACTORY_ADDR"])
         self.router_address = Web3.toChecksumAddress(config["ROUTER_ADDR"])
@@ -52,7 +54,7 @@ class Dex(object):
         if not refresh and token in self.__decimals:
             return self.__decimals[token]
         try:
-            balance_contract = self.client.eth.contract(address=token, abi=self.factory_abi)
+            balance_contract = self.client.eth.contract(address=token, abi=self.token_abi)
             decimals = balance_contract.functions.decimals().call()
             return 10 ** decimals
         except ABIFunctionNotFound:
