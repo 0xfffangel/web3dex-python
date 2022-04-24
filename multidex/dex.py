@@ -257,9 +257,9 @@ class Dex(object):
         amount = int(float(amount) * self.decimals(outToken))
         amount_out = self.price(outToken, self.base_address, amount)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
-        return self.__swapExactTokensForETH(amount, min_tokens, [inToken, outToken], Web3.toChecksumAddress(address), timeout, gas, gaslimit, gasmultiplier)
+        return self.__swapExactTokensForTokens(amount, min_tokens, [inToken, outToken], Web3.toChecksumAddress(address), timeout, gas, gaslimit, gasmultiplier)
 
-    def __swapExactTokensForETH(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+    def __swapExactTokensForTokens(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         return self.router_contract.functions.swapExactTokensForTokens(
             min_tokens, path, address, timeout
             ).buildTransaction(
