@@ -156,9 +156,12 @@ class Dex(object):
         return price / self.decimals(output)
 
     def getAmountsOut(self, amount, inToken, outToken, middleToken = None):
+        inToken = self.base_address if inToken is None else Web3.toChecksumAddress(inToken)
+        outToken = self.base_address if outToken is None else Web3.toChecksumAddress(outToken)
         if middleToken is None:
             path = [inToken, outToken]
         else:
+            middleToken = Web3.toChecksumAddress(middleToken)
             path = [inToken, middleToken, outToken]
         return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
 
