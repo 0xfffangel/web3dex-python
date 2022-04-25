@@ -208,12 +208,6 @@ class Dex(object):
         return self.swapExactETHForTokens(amount, min_tokens, path, address, timeout, gas,  gaslimit, gasmultiplier)
 
     def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
-        if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
-            return self.router_contract.functions.swapExactAVAXForTokens(
-                min_tokens, path, address, timeout
-                ).buildTransaction(
-                    self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
-                    )
         return self.router_contract.functions.swapExactETHForTokens(
             min_tokens, path, address, timeout
             ).buildTransaction(
@@ -238,12 +232,6 @@ class Dex(object):
         return self.swapExactTokensForETH(amount, min_tokens, path, address, timeout, gas,  gaslimit, gasmultiplier)
 
     def swapExactTokensForETH(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
-        if self.base_address == Web3.toChecksumAddress("0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"): # avax
-            return self.router_contract.functions.swapExactTokensForAVAX(
-            amount, min_tokens, path, address, timeout
-            ).buildTransaction(
-                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None, gasmultiplier=gasmultiplier)
-                )
         return self.router_contract.functions.swapExactTokensForETH(
             amount, min_tokens, path, address, timeout
             ).buildTransaction(
@@ -424,9 +412,37 @@ class Traderjoe(Dex):
     def __init__(self):
         super().__init__("./configs/traderjoe.json")
 
+    def swapExactTokensForETH(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+        return self.router_contract.functions.swapExactTokensForAVAX(
+            amount, min_tokens, path, address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None, gasmultiplier=gasmultiplier)
+                )
+
+    def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+        return self.router_contract.functions.swapExactAVAXForTokens(
+            min_tokens, path, address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
+                )
+
 class Pangolin(Dex):
     def __init__(self):
         super().__init__("./configs/pangolin.json")
+    
+    def swapExactTokensForETH(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+        return self.router_contract.functions.swapExactTokensForAVAX(
+            amount, min_tokens, path, address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=None, gasmultiplier=gasmultiplier)
+                )
+
+    def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
+        return self.router_contract.functions.swapExactAVAXForTokens(
+            min_tokens, path, address, timeout
+            ).buildTransaction(
+                self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
+                )
 
 class Knightswap(Dex):
     def __init__(self):
