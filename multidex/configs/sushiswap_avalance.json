@@ -1,0 +1,12 @@
+{
+    "PROVIDER": "https://api.avax.network/ext/bc/C/rpc",
+    "FACTORY_ADDR": "0xc35dadb65012ec5796536bd9864ed8773abc74c4",
+    "ROUTER_ADDR": "0x1b02da8cb0d097eb8d57a175b88c7d8b47997506",
+    "FACTORY_ABI_FILE": "./abi/uniswapv2_factory_abi.json",
+    "ROUTER_ABI_FILE": "./abi/pangolin_router_abi.json",
+    "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
+    "BASE_SYMBOL": "AVAX",
+    "BASE_CONTRACT": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+    "EXPLORER": "https://avascan.info",
+    "TOKEN": "0x60781c2586d68229fde47564546784ab3faca982"
+}

@@ -440,6 +440,10 @@ class PadswapMoonbeam(Dex):
     def __init__(self):
         super().__init__("./configs/padswap_moonbeam.json")
 
+class SushiswapAvalance(Dex):
+    def __init__(self):
+        super().__init__("./configs/sushiswap_avalance.json")
+
 class Solidly(Dex):
     def __init__(self):
         super().__init__("./configs/solidly.json")
