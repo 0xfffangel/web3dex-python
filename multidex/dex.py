@@ -436,6 +436,10 @@ class Solarbeam(Dex):
     def __init__(self):
         super().__init__("./configs/solarbeam.json")
 
+class PadswapMoonbeam(Dex):
+    def __init__(self):
+        super().__init__("./configs/padswap_moonbeam.json")
+
 class Solidly(Dex):
     def __init__(self):
         super().__init__("./configs/solidly.json")
