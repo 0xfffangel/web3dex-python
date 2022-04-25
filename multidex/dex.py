@@ -444,6 +444,14 @@ class SushiswapAvalance(Dex):
     def __init__(self):
         super().__init__("./configs/sushiswap_avalance.json")
 
+class ThorusAvalance(Dex):
+    def __init__(self):
+        super().__init__("./configs/thorus_avalance.json")
+
+class ThorusMoonbeam(Dex):
+    def __init__(self):
+        super().__init__("./configs/thorus_moonbeam.json")
+
 class Solidly(Dex):
     def __init__(self):
         super().__init__("./configs/solidly.json")

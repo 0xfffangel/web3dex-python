@@ -1,0 +1,12 @@
+{
+    "PROVIDER": "https://rpc.api.moonbeam.network",
+    "FACTORY_ADDR": "0xa98ea6356A316b44Bf710D5f9b6b4eA0081409Ef",
+    "ROUTER_ADDR": "0xb5b2444eDF79b00d40f463f79158D1187a0D0c25",
+    "FACTORY_ABI_FILE": "./abi/uniswapv2_factory_abi.json",
+    "ROUTER_ABI_FILE": "./abi/uniswapv2_router_abi.json",
+    "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
+    "BASE_SYMBOL": "GLMR",
+    "BASE_CONTRACT": "0xacc15dc74880c9944775448304b263d191c6077f",
+    "EXPLORER": "https://moonscan.io",
+    "TOKEN": "0x735aBE48e8782948a37C7765ECb76b98CdE97B0F"
+}

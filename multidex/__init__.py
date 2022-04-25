@@ -24,6 +24,8 @@ from .dex import Solarflare
 from .dex import Zenlink
 from .dex import PadswapMoonbeam
 from .dex import SushiswapAvalance
+from .dex import ThorusAvalance
+from .dex import ThorusMoonbeam
 
 __all__ = [
     Apeswap(),
@@ -49,5 +51,7 @@ __all__ = [
     Zenlink(),
     PadswapMoonbeam(),
     SushiswapAvalance(),
+    ThorusAvalance(),
+    ThorusMoonbeam(),
     Solidex()
 ]
