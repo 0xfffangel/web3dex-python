@@ -6,7 +6,7 @@
     "ROUTER_ABI_FILE": "./abi/uniswapv2_router_abi.json",
     "LIQUIDITY_ABI_FILE": "./abi/uniswapv2_liquidity_abi.json",
     "BASE_SYMBOL": "GLMR",
-    "BASE_CONTRACT": "0xacc15dc74880c9944775448304b263d191c6077f",
+    "BASE_CONTRACT": "0xe3DB50049C74De2F7d7269823af3178Cf22fd5E3",
     "EXPLORER": "https://moonscan.io",
     "TOKEN": "0x59193512877E2EC3bB27C178A8888Cfac62FB32D"
 }
