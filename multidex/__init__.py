@@ -7,4 +7,12 @@ from .moonbeam import *
 from .moonriver import *
 from .polygon import *
 
-all = avalance.all + bsc.all + ethereum.all + fantom.all + moonbeam.all + moonriver.all + polygon.all
+all = {
+    "avalance": avalance.all,
+    "bsc": bsc.all,
+    "ethereum": ethereum.all,
+    "fantom": fantom.all,
+    "moonbeam": moonbeam.all,
+    "moonriver": moonriver.all,
+    "polygon": polygon.all,
+}
