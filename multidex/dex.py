@@ -205,14 +205,14 @@ class Dex(object):
         if middleToken is not None:
             middleToken = Web3.toChecksumAddress(middleToken)
             path = [self.base_address, middleToken, token]
-        return self.swapExactETHForTokens(min_tokens, path, address, timeout)
+        return self.swapExactETHForTokens(amount, min_tokens, path, address, timeout)
 
     def buildTransaction(self, tx, amount, address, gas = 0, gaslimit = 300000, gasmultiplier = 1.2, nonce=None):
         return tx.buildTransaction(
             self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier, nonce=nonce)
         )
 
-    def swapExactETHForTokens(self, min_tokens, path, address, timeout = 1.2):
+    def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout = 1.2):
         return self.router_contract.functions.swapExactETHForTokens(min_tokens, path, address, timeout)
 
     def swapFromTokensToBase(self, amount, token, address, middleToken = None, slippage = 5):
@@ -367,7 +367,7 @@ class Zenlink(Dex):
     def sync(self, inToken, outToken):
         return
 
-    def swapExactETHForTokens(self, min_tokens, path, address, timeout = 1.2):
+    def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout = 1.2):
         return self.router_contract.functions.swapExactNativeCurrencyForTokens(min_tokens, path, address, timeout)
 
     def swapExactTokensForETH(self, amount, min_tokens, path, address, timeout = 1.2):
@@ -395,7 +395,7 @@ class Traderjoe(Dex):
     def swapExactTokensForETH(self, amount, min_tokens, path, address, timeout = 1.2):
         return self.router_contract.functions.swapExactTokensForAVAX(amount, min_tokens, path, address, timeout)
 
-    def swapExactETHForTokens(self, min_tokens, path, address, timeout = 1.2):
+    def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout = 1.2):
         return self.router_contract.functions.swapExactAVAXForTokens(min_tokens, path, address, timeout)
 
 class Pangolin(Dex):
@@ -405,7 +405,7 @@ class Pangolin(Dex):
     def swapExactTokensForETH(self, amount, min_tokens, path, address, timeout = 1.2):
         return self.router_contract.functions.swapExactTokensForAVAX(amount, min_tokens, path, address, timeout)
 
-    def swapExactETHForTokens(self, min_tokens, path, address, timeout = 1.2):
+    def swapExactETHForTokens(self, amount, min_tokens, path, address, timeout = 1.2):
         return self.router_contract.functions.swapExactAVAXForTokens(min_tokens, path, address, timeout)
 
 class Knightswap(Dex):
