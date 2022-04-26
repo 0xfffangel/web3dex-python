@@ -1,5 +1,5 @@
 {
-    "PROVIDER": "https://rpc-waultfinance-mainnet.maticvigil.com/v1/0bc1bb1691429f1eeee66b2a4b919c279d83d6b0",
+    "PROVIDER": "https://rpc-mainnet.maticvigil.com",
     "FACTORY_ADDR": "0xa98ea6356A316b44Bf710D5f9b6b4eA0081409Ef",
     "ROUTER_ADDR": "0x3a1D87f206D12415f5b0A33E786967680AAb4f6d",
     "FACTORY_ABI_FILE": "./abi/uniswapv2_factory_abi.json",
