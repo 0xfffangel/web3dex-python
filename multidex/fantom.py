@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/fantom/'
+configs = './configs/fantom'
 
 class Spiritswap(Dex):
     def __init__(self):

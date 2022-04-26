@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/moonriver/'
+configs = './configs/moonriver'
 
 class Solarbeam(Dex):
     def __init__(self):

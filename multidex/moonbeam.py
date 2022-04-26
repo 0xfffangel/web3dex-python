@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/moonbeam/'
+configs = './configs/moonbeam'
 
 class Stellaswap(Dex):
     def __init__(self):

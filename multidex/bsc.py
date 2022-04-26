@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/bsc/'
+configs = './configs/bsc'
 
 class Mdexswap(Dex):
     def __init__(self):

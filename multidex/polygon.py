@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/polygon/'
+configs = './configs/polygon'
 
 class Quickswap(Dex):
     def __init__(self):

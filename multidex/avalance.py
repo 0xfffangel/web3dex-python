@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/avalance/'
+configs = './configs/avalance'
 
 class Sushiswap(Dex):
     def __init__(self):

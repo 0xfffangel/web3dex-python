@@ -1,6 +1,6 @@
 from .dex import Dex
 
-configs = './configs/ethereum/'
+configs = './configs/ethereum'
 
 class Uniswap(Dex):
     def __init__(self):
