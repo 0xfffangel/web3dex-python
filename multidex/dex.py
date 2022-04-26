@@ -209,7 +209,7 @@ class Dex(object):
 
     def buildTransaction(self, tx, amount, address, gas = 0, gaslimit = 300000, gasmultiplier = 1.2, nonce=None):
         return tx.buildTransaction(
-            self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier)
+            self.paramsTransaction(address, gas, gaslimit=gaslimit, amount=amount, gasmultiplier=gasmultiplier, nonce=nonce)
         )
 
     def swapExactETHForTokens(self, min_tokens, path, address, timeout = 1.2):
@@ -261,7 +261,9 @@ class Dex(object):
         amount = Web3.toWei(amount, 'ether')
         return self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=amount, to_address=to_address, gasmultiplier=gasmultiplier)
 
-    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None, gasmultiplier = 1.2):
+    def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None, gasmultiplier = 1.2, nonce=None):
+        if nonce is None:
+            nonce = self.client.eth.get_transaction_count(address)
         nonce = self.client.eth.get_transaction_count(address)
         gas = gas if gas > 0 else self.estimate_gas() * gasmultiplier
         print("gasPrice", self.client.eth.gasPrice / 1000000000)
