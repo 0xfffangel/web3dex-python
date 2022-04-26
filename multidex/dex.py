@@ -270,7 +270,6 @@ class Dex(object):
     def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None, gasmultiplier = 1.2, nonce=None):
         if nonce is None:
             nonce = self.client.eth.get_transaction_count(address)
-        nonce = self.client.eth.get_transaction_count(address)
         gas = gas if gas > 0 else self.estimate_gas() * gasmultiplier
         print("gasPrice", self.client.eth.gasPrice / 1000000000)
         print("gas", gas)
