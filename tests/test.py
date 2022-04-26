@@ -16,8 +16,11 @@ class TestDex(unittest.TestCase):
         self.assertNotEqual(reserves[0], 0, "invalid reserve0")
         self.assertNotEqual(reserves[1], 0, "invalid reserve0")
 
-        liquidity = dex.liquidity(token)
-        self.assertNotEqual(liquidity, 0, "invalid liquidity")
+        liquidity = dex.liquidity_in(token)
+        self.assertNotEqual(liquidity, 0, "invalid liquidity in")
+
+        liquidity = dex.liquidity_out(token)
+        self.assertNotEqual(liquidity, 0, "invalid liquidity out")
 
         reserve_ratio = dex.reserve_ratio(token)
         self.assertNotEqual(reserve_ratio, 0, "invalid reserve_ratio")
