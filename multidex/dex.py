@@ -204,12 +204,6 @@ class Dex(object):
         tx = self.swapExactETHForTokens(amount, min_tokens, path, wallet_address, timeout)
         return self.buildTransaction(tx, amount, wallet_address, gas, gaslimit, gasmultiplier, nonce)
 
-    def swapFromBaseToTokens(self, amount, path, wallet_address, slippage = 5):
-        timeout = (int(time.time()) + 60)
-        amount = int(float(amount) * self.decimals(path[0]))
-        min_tokens = self.calculateMinTokens(amount, path, slippage)
-        return self.swapExactETHForTokens(amount, min_tokens, path, wallet_address, timeout)
-
     def calculateMinTokens(self, amount, path, slippage = 5):
         amount_out = self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
         min_tokens = int(amount_out * (1 - (slippage / 100)))
