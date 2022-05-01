@@ -47,6 +47,9 @@ class Dex(object):
     def explorer(self):
         return self.explorer
 
+    def block_number(self):
+        return self.client.eth.block_number
+
     def decimals(self, token, fallback = None, refresh = False):
         token = Web3.toChecksumAddress(token)
         if fallback is not None:
