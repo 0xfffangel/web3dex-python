@@ -10,7 +10,12 @@ class Sushiswap(Dex):
     def __init__(self):
         super().__init__(configs + "/sushiswap.json")
 
+class Sushiswap(Dex):
+    def __init__(self):
+        super().__init__(configs + "/balancer.json")
+
 all = [
     Uniswap(),
-    Sushiswap()
+    Sushiswap(),
+    Balancer()
 ]
