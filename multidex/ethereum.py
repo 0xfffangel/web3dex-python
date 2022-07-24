@@ -17,6 +17,5 @@ class Shibaswap(Dex):
 all = [
     Uniswap(),
     Sushiswap(),
-    Balancer(),
     Shibaswap()
 ]
