@@ -14,8 +14,13 @@ class Shibaswap(Dex):
     def __init__(self):
         super().__init__(configs + "/shibaswap.json")
 
+class Stepn(Dex):
+    def __init__(self):
+        super().__init__(configs + "/stepn.json")
+
 all = [
     Uniswap(),
     Sushiswap(),
-    Shibaswap()
+    Shibaswap(),
+    Stepn()
 ]
