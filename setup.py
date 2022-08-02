@@ -2,5 +2,5 @@
 import pkg_resources
 import setuptools
 
-pkg_resources.require('setuptools>=61.0.0')
+pkg_resources.require('setuptools>=59.6.0')
 setuptools.setup()
