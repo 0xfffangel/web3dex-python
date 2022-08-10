@@ -10,12 +10,7 @@ class Waultswap(Dex):
     def __init__(self):
         super().__init__(configs + "/waultswap.json")
 
-class Uniswap(Dex):
-    def __init__(self):
-        super().__init__(configs + "/uniswap.json")
-
 all = [
-    Uniswap(),
     Quickswap(),
     Waultswap()    
 ]
