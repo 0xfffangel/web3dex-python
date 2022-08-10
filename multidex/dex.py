@@ -104,6 +104,7 @@ class Dex(object):
         if not refresh and pair_address in self.__pairs_reserves:
             return self.__pairs_reserves[pair_address]
         pair_contract = self.client.eth.contract(address=pair_address, abi=self.liquidity_abi)
+        print("{} getReserves()".format(pair_contract))
         reserves = pair_contract.functions.getReserves().call()
         if self.reversed(input, output):
             reserves[0] = reserves[0] / self.decimals(output)
@@ -146,6 +147,7 @@ class Dex(object):
             return self.client.eth.getBalance(wallet_address) / self.decimals(self.base_address)
         token = Web3.toChecksumAddress(token)
         balance_contract = self.client.eth.contract(address=token, abi=self.liquidity_abi)
+        print("{} balanceOf({})".format(balance_contract, wallet_address))
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance / self.decimals(token)
 
@@ -166,6 +168,7 @@ class Dex(object):
         else:
             middleToken = Web3.toChecksumAddress(middleToken)
             path = [inToken, middleToken, outToken]
+        print("{} getAmountsOut({}, {})".format(self.router_contract, amount, path))
         return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
 
     def getPair(self, inToken, outToken):
@@ -173,6 +176,7 @@ class Dex(object):
         outToken = self.base_address if outToken is None else Web3.toChecksumAddress(outToken)
         if (inToken + outToken) in self.__pairs:
             return self.__pairs[inToken + outToken]
+        print("{} getPair({}, {})".format(self.factory_contract, inToken, outToken))
         pair = self.factory_contract.functions.getPair(inToken, outToken).call()
         self.__pairs[inToken + outToken] = pair
         return pair
@@ -185,6 +189,7 @@ class Dex(object):
     def allowance(self, wallet_address, address):
         address = Web3.toChecksumAddress(address)
         contract = self.client.eth.contract(address=address, abi=self.liquidity_abi)
+        print("{} allowance({}, {})".format(contract, wallet_address, self.router_address))
         return contract.functions.allowance(wallet_address, self.router_address).call()
 
     def check_approval(self, wallet_address, address):
