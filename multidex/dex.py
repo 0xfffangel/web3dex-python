@@ -261,11 +261,13 @@ class Dex(object):
 
     def approve(self, token, wallet_address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2, nonce = None):
         token = Web3.toChecksumAddress(token)
+        wallet_address = Web3.toChecksumAddress(wallet_address)
         contract = self.client.eth.contract(address=token, abi=self.liquidity_abi)
         tx = contract.functions.approve(self.router_address, amount)
         return self.buildTransaction(tx, None, wallet_address, gas, gaslimit, gasmultiplier, nonce)
     
     def transfer(self, wallet_address, to_address, amount = 115792089237316195423570985008687907853269984665640564039457584007913129639935, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2, nonce = None):
+        wallet_address = Web3.toChecksumAddress(wallet_address)
         to_address = Web3.toChecksumAddress(to_address)
         contract = self.client.eth.contract(address=self.base_address, abi=self.liquidity_abi)
         tx = contract.functions.transfer(to_address, amount)
@@ -273,6 +275,8 @@ class Dex(object):
 
     def move(self, wallet_address, to_address, amount, gas = 0,  gaslimit = 300000, gasmultiplier = 1.2):
         amount = Web3.toWei(amount, 'ether')
+        wallet_address = Web3.toChecksumAddress(wallet_address)
+        to_address = Web3.toChecksumAddress(to_address)
         return self.paramsTransaction(wallet_address, gas, gaslimit=gaslimit, amount=amount, to_address=to_address, gasmultiplier=gasmultiplier)
 
     def paramsTransaction(self, address, gas = 0, type = 0, amount = None, gaspriority = 1, gaslimit=0, to_address=None, gasmultiplier = 1.2, nonce=None):
