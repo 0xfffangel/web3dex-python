@@ -169,7 +169,7 @@ class Dex(object):
             middleToken = Web3.toChecksumAddress(middleToken)
             path = [inToken, middleToken, outToken]
         print("{} getAmountsOut({}, {})".format(self.router_contract, amount, path))
-        return self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
+        return self.router_contract.functions.getAmountsOut(int(amount), path).call()[-1]
 
     def getPair(self, inToken, outToken):
         inToken = self.base_address if inToken is None else Web3.toChecksumAddress(inToken)
