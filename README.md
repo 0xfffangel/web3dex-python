@@ -31,8 +31,8 @@ USDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
 print("reserves: ", uniswap.reserves(USDC))
 print("liquidity_in: ", uniswap.liquidity_in(USDC))
 print("liquidity_out: ", uniswap.liquidity_out(USDC))
-print("reserve_ratio: ", uniswap.reserve_ratio(USDC))
-print("price: ", uniswap.price(USDC))
+print("reserve_ratio: {:.18f}".format(uniswap.reserve_ratio(USDC)))
+print("price: {:.18f}".format(uniswap.price(USDC)))
 ```
 
 Result:
@@ -42,6 +42,47 @@ liquidity_in:  64985095.457761
 liquidity_out:  32622.565503187332
 reserve_ratio:  0.0005019929788971377
 price:  0.000500486992281985
+```
+
+### How to swap them
+
+```python
+import multidex
+
+# setup env
+uniswap = multidex.ethereum.Uniswap()
+USDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+wallet_address = ""
+private_key = ""
+amount = 0.001
+
+# approve token for wallet_address if now allowance
+if not uniswap.check_approval(wallet_address, USDC):
+    tx = uniswap.approve(token=USDC, wallet_address=wallet_address)
+    signed_tx = uniswap.signTransaction(transaction = tx, private_key = private_key)
+    tx_hash = uniswap.sendTransaction(signed_transaction = signed_tx)
+    if not uniswap.waitTransaction(tx_hash):
+        raise Exception("TransactionExpection: " + tx_hash.hex())
+
+# swap from base to token
+tx = uniswap.swapFromBaseToTokens(amount, USDC, wallet_address)
+signed_tx = uniswap.signTransaction(transaction = tx, private_key = private_key)
+tx_hash = uniswap.sendTransaction(signed_transaction = signed_tx)
+if not uniswap.waitTransaction(tx_hash):
+    raise Exception("TransactionExpection: " + tx_hash.hex())
+print(tx_hash)
+
+# get updated balances
+print("base balance {:.18f}".format(uniswap.balance(wallet_address)))
+print("USDC balance {:.18f}".format(uniswap.balance(wallet_address, USDC)))
+
+# swap from token to base
+tx = uniswap.swapFromTokensToBase(amount, USDC, wallet_address)
+signed_tx = uniswap.signTransaction(transaction = tx, private_key = private_key)
+tx_hash = uniswap.sendTransaction(signed_transaction = signed_tx)
+if not uniswap.waitTransaction(tx_hash):
+    raise Exception("TransactionExpection: " + tx_hash.hex())
+print(tx_hash)
 ```
 
 ### Open PR for new Dex
@@ -64,7 +105,7 @@ class Uniswap(Dex):
     def __init__(self):
         super().__init__(configs + "/uniswap.json"))
 ```
-3. Add the class name into the `__all__` groups to be listed:
+3. Add the class name into the `all` groups to be listed:
 ```python
 
 all = [
