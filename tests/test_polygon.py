@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.polygon import *
+from web3dex.polygon import *
 
 class TestUniswap(unittest.TestCase):
 

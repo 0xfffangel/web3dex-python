@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.moonriver import *
+from web3dex.moonriver import *
 
 class TestMoonriver(unittest.TestCase):
 

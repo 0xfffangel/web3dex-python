@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.moonbeam import *
+from web3dex.moonbeam import *
 
 class TestMoonbeam(unittest.TestCase):
 

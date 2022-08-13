@@ -1,4 +1,4 @@
 venv
 dist
-multidex/__pycache__
+web3dex/__pycache__
 tests/__pycache__

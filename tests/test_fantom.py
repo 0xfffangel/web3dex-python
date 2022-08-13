@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.fantom import *
+from web3dex.fantom import *
 
 class TestFantom(unittest.TestCase):
 

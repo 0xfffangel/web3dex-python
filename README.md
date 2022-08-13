@@ -1,8 +1,8 @@
-MultiDEX python lib
+WEB3Dex python lib
 ===
 
 A flexible python library to interact with evm-like DEX.
-MultiDex library provide a unified interface for SC based on uniswap-fork.
+WEB3Dex library provide a unified interface for SC based on uniswap-fork.
 Based on [web3](https://github.com/ethereum/web3.py).
 
 ### Supported Dex in chains
@@ -17,13 +17,13 @@ Based on [web3](https://github.com/ethereum/web3.py).
 
 ### Get it ready
 ```sh
-pip install git+https://github.com/0xfffangel/multidex-python.git
+pip install git+https://github.com/0xfffangel/web3dex-python.git
 ```
 
 ### How to start
 Python script:
 ```python
-from multidex.ethereum import Uniswap
+from web3dex.ethereum import Uniswap
 
 uniswap = Uniswap()
 USDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
@@ -47,10 +47,10 @@ price:  0.000500486992281985
 ### How to swap them
 
 ```python
-import multidex
+import web3dex
 
 # setup env
-uniswap = multidex.ethereum.Uniswap()
+uniswap = web3dex.ethereum.Uniswap()
 USDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
 wallet_address = ""
 private_key = ""
@@ -86,7 +86,7 @@ print(tx_hash)
 ```
 
 ### Open PR for new Dex
-1. Define a new Dex config json in the chain folder (ex for `uniswap`: `multidex/configs/ethereum/uniswap.json`):
+1. Define a new Dex config json in the chain folder (ex for `uniswap`: `web3dex/configs/ethereum/uniswap.json`):
 ```json
 {
     "PROVIDER": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
@@ -99,7 +99,7 @@ print(tx_hash)
     "BASE_CONTRACT": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 }
 ```
-2. Add new Dex object in the chain script (ex: `multidex/configs/ethereum.py`):
+2. Add new Dex object in the chain script (ex: `web3dex/configs/ethereum.py`):
 ```python
 class Uniswap(Dex):
     def __init__(self):

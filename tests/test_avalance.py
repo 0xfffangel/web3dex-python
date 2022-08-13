@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.avalance import *
+from web3dex.avalance import *
 
 class TestAvalance(unittest.TestCase):
 

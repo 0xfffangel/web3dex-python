@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.bsc import *
+from web3dex.bsc import *
 
 class TestBsc(unittest.TestCase):
 

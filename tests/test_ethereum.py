@@ -1,7 +1,7 @@
 import unittest
 import logging
 import sys
-from multidex.ethereum import *
+from web3dex.ethereum import *
 
 class TestEthereum(unittest.TestCase):
 
