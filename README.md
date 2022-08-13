@@ -1,4 +1,4 @@
-WEB3Dex python lib
+WEB3Dex
 ===
 
 A flexible python library to interact with evm-like DEX.
@@ -17,7 +17,7 @@ Based on [web3](https://github.com/ethereum/web3.py).
 
 ### Get it ready
 ```sh
-pip install git+https://github.com/0xfffangel/web3dex-python.git
+pip install web3dex
 ```
 
 ### How to start
