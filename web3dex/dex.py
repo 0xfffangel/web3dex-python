@@ -151,6 +151,13 @@ class Dex(object):
         balance = balance_contract.functions.balanceOf(wallet_address).call()
         return balance / self.decimals(token)
 
+    def fees(self, input = None, output = None, intermediate = None, amount = 1):
+        ratio = reserve_ratio(input, output, intermediate)
+        amount = amount * self.decimals(input)
+        price = getAmountsOut(amount, input, output, intermediate)
+        price = price / self.decimals(output)
+        return 1 - price / amount
+
     def price(self, input = None, output = None, intermediate = None, amount = 1):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
         output = self.base_address if output is None else Web3.toChecksumAddress(output)
