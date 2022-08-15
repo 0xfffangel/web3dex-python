@@ -156,7 +156,7 @@ class Dex(object):
         amount = amount * self.decimals(input)
         price = self.getAmountsOut(amount, input, output, intermediate)
         price = price / self.decimals(output)
-        return 1 - price / amount
+        return 1 - price / ratio
 
     def price(self, input = None, output = None, intermediate = None, amount = 1):
         input = self.base_address if input is None else Web3.toChecksumAddress(input)
