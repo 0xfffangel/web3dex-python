@@ -152,9 +152,9 @@ class Dex(object):
         return balance / self.decimals(token)
 
     def fees(self, input = None, output = None, intermediate = None, amount = 1):
-        ratio = reserve_ratio(input, output, intermediate)
+        ratio = self.reserve_ratio(input, output, intermediate)
         amount = amount * self.decimals(input)
-        price = getAmountsOut(amount, input, output, intermediate)
+        price = self.getAmountsOut(amount, input, output, intermediate)
         price = price / self.decimals(output)
         return 1 - price / amount
 
