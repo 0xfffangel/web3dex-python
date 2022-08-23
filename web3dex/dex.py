@@ -216,7 +216,7 @@ class Dex(object):
         return self.buildTransaction(tx, amount, wallet_address, gas, gaslimit, gasmultiplier, nonce)
 
     def calculateMinTokens(self, amount, path, slippage = 5):
-        amount_out = self.getAmountsOut(amount, path).call()[-1]
+        amount_out = self.getAmountsOut(amount, path)
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         print("amount",amount)
         print("amount_out",amount_out)
