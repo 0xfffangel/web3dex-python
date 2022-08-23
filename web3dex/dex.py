@@ -154,7 +154,7 @@ class Dex(object):
     def fees(self, input = None, output = None, intermediate = None, amount = 1):
         ratio = self.reserve_ratio(input, output, intermediate)
         amount = amount * self.decimals(input)
-        price = self.getAmountsOut(amount, input, output, intermediate)
+        price = self.price(amount, input, output, intermediate)
         price = price / self.decimals(output)
         return 1 - price / ratio
 
@@ -164,18 +164,14 @@ class Dex(object):
         intermediate = None if intermediate is None else Web3.toChecksumAddress(intermediate)
         self.sync(input, output)
         amount = amount * self.decimals(input)
-        price = self.getAmountsOut(amount, input, output, intermediate)
-        return price / self.decimals(output)
-
-    def getAmountsOut(self, amount, inToken, outToken, middleToken = None):
-        inToken = self.base_address if inToken is None else Web3.toChecksumAddress(inToken)
-        outToken = self.base_address if outToken is None else Web3.toChecksumAddress(outToken)
-        if middleToken is None:
-            path = [inToken, outToken]
+        if intermediate is None:
+            path = [input, output]
         else:
-            middleToken = Web3.toChecksumAddress(middleToken)
-            path = [inToken, middleToken, outToken]
-        print("{} getAmountsOut({}, {})".format(self.router_contract, amount, path))
+            path = [input, intermediate, output]
+        price = self.getAmountsOut(amount, path)
+        return price / self.decimals(output)
+    
+    def getAmountsOut(self, amount, path):
         return self.router_contract.functions.getAmountsOut(int(amount), path).call()[-1]
 
     def getPair(self, inToken, outToken):
@@ -220,7 +216,7 @@ class Dex(object):
         return self.buildTransaction(tx, amount, wallet_address, gas, gaslimit, gasmultiplier, nonce)
 
     def calculateMinTokens(self, amount, path, slippage = 5):
-        amount_out = self.router_contract.functions.getAmountsOut(amount, path).call()[-1]
+        amount_out = self.getAmountsOut(amount, path).call()[-1]
         min_tokens = int(amount_out * (1 - (slippage / 100)))
         print("amount",amount)
         print("amount_out",amount_out)
